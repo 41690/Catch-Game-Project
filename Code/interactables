@@ -1,1 +1,31 @@
-
+class interactable {
+  constructor(xpos, ypos, xvel, yvel) {
+    this.xpos = xpos;
+    this.ypos = ypos;
+    this.xvel = xvel;
+    this.yvel = yvel;
+  }
+  get XPos() {return this.xpos;}
+  get YPos() {return this.ypos;} 
+  get XVel() {return this.xpel}
+  get YVel() {return this.ypel}
+  set XPos(set) {this.xpos = set;}
+  set YPos(set) {this.ypos = set;}
+  set XVel(set) {this.xvel = set;}
+  set YVel(set) {this.yvel = set;}
+  static Gravity() {}
+}
+class fruits extends interactable {
+  constructor(xpos, ypos, xvelocity, yvelocity, type) {
+    super(xpos, ypos, xvelocity, yvelocity);
+    this.type = type;
+  }
+  get Type() {return this.type;}
+}
+class bombs extends interactable {
+  constructor(xpos, ypos, xvelocity, yvelocity) {
+    super(xpos, ypos, xvelocity, yvelocity);
+  }
+  static Explode() {}
+  static Move() {}
+}
