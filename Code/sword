@@ -1,1 +1,6 @@
-
+const sword = {
+  currentXPos: 0,
+  XPosLastFrame: 0,
+  currentYPos: 0,
+  YPosLastFrame: 0
+}
