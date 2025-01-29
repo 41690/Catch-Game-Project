@@ -1,1 +1,7 @@
-
+function setup() {
+  createCanvas(1000, 700);
+  frameRate(120);
+}
+function draw() {
+  background(100);
+}
