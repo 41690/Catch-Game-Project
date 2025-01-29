@@ -10,5 +10,6 @@
     <main>
     </main>
     <script src="sketch.js"></script>
+    <script src="interactables.js"></script>
   </body>
 </html>
