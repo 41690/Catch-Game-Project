@@ -2,12 +2,12 @@
 - means needs doing
 # means in progress
 
-add backdrop / background to sketch -
-initialise draw() function in sketch file -
+add backdrop / background to sketch #
+initialise draw() function in sketch file #
 create game start and end functions -
 add class specific parameters / functions to fruit and bomb classes #
 add music: bomb slice +, fruit slice +, title screen +, main music -, fruit fallen -
-create images for fruit and bomb objects -
-create images for animations #
+create images for fruit and bomb objects #
+create images for animations -
 allow sword and fruit classes to work with each other #
 create title screen -
