@@ -1,10 +1,10 @@
 const sword = {
-  currentXPos: 0,
   XPosLastFrame: 0,
-  currentYPos: 0,
   YPosLastFrame: 0,
+  updateX: () => XPosLastFrame = mouseX,
+  updateY: () => YPosLastFrame = mouseY,
+  getSpeed: () => dist(mouseX, mouseY, sword.XPosLastFrame, sword.YPosLastFrame)
 };
-function getSwordSpeed() {dist(sword.currentXPos, sword.currentYPos, sword.XPosLastFrame, sword.YPosLastFrame);}
 function testCollision() {}
 const stats = {
   health: 5,
