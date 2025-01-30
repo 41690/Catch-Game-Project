@@ -10,13 +10,15 @@ function preload() {
   fruitSlice = loadSound('Music/Fruit Slice.mp3');
   bombSlice = loadSound('Music/Bomb Slice.mp3');
   
-  bomb = loadImage('/assets/bomb.png');
-  bombExplosion = loadImage('/assets/explosion.png');
+  bomb = loadImage('/bomb.png');
+  bombExplosion = loadImage('/explosion.png');
 }
 function draw() {
   background(255);
   //Display waves at the start of a wave
   if(displayWaves) {textSize(50); text("Wave " + stats.wave, 430, 330);}
+  
+  let bomb = createImage(66,66)
 }
 function waves() {
   setTimeout(waves, 100000);
