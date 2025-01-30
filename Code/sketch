@@ -9,6 +9,9 @@ function preload() {
   titleScreen = loadSound('Music/Title Screen.mp3');
   fruitSlice = loadSound('Music/Fruit Slice.mp3');
   bombSlice = loadSound('Music/Bomb Slice.mp3');
+  
+  bomb = loadImage('/assets/bomb.png');
+  bombExplosion = loadImage('/assets/explosion.png');
 }
 function draw() {
   background(255);
