@@ -1,6 +1,6 @@
 function setup() {
   frameRate(120);
-  createCanvas(1000, 700);
+  createCanvas(900, 600);
   waves();
   sounds.titleScreen();
 }
@@ -9,15 +9,14 @@ function preload() {
   titleScreen = loadSound('Music/Title Screen.mp3');
   fruitSlice = loadSound('Music/Fruit Slice.mp3');
   bombSlice = loadSound('Music/Bomb Slice.mp3');
-  
-  bomb = loadImage('/bomb.png');
-  bombExplosion = loadImage('/explosion.png');
+  //images
+  backdropMain = loadImage('Assets/backdropMain.jpg');
 }
 function draw() {
   background(255);
   //Display waves at the start of a wave
   if(displayWaves) {textSize(50); text("Wave " + stats.wave, 430, 330);}
-  
+  image(backdropMain, 0, 0, width, height, 0, 0, backdropMain.width, backdropMain.height, COVER);
 }
 function waves() {
   setTimeout(waves, 100000);
