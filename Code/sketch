@@ -10,7 +10,7 @@ function preload() {
   fruitSlice = loadSound('Music/Fruit Slice.mp3');
   bombSlice = loadSound('Music/Bomb Slice.mp3');
   //images
-  backdropMain = loadImage('Assets/backdropMain.jpg');
+  backdropMain = loadImage('/backdropMain.jpg');
 }
 function draw() {
   background(255);
