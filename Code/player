@@ -6,9 +6,7 @@ const Sword =
   YPosLastFrame: 0,
 };
 function getSwordSpeed() {dist(Sword.currentXPos, Sword.currentYPos, Sword.XPosLastFrame, Sword.YPosLastFrame);}
-function testCollision() {
-  
-}
+function testCollision() {}
 const Stats = {
   health: 5,
   score: 0
