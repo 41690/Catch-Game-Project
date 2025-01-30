@@ -1,13 +1,14 @@
-const Sword = 
-{
+const sword = {
   currentXPos: 0,
   XPosLastFrame: 0,
   currentYPos: 0,
   YPosLastFrame: 0,
 };
-function getSwordSpeed() {dist(Sword.currentXPos, Sword.currentYPos, Sword.XPosLastFrame, Sword.YPosLastFrame);}
+function getSwordSpeed() {dist(sword.currentXPos, sword.currentYPos, sword.XPosLastFrame, sword.YPosLastFrame);}
 function testCollision() {}
-const Stats = {
+const stats = {
   health: 5,
-  score: 0
-}
+  score: 0,
+  fallen: 0, //game ends after fallen reaches 5 to prevent easily advancing waves by afking. This stat resets every wave.
+  wave: 0
+};
