@@ -11,8 +11,15 @@ function preload() {
   fruitSlice = loadSound('Music/Fruit Slice.mp3');
   bombSlice = loadSound('Music/Bomb Slice.mp3');
   //images
-  backdropMain = loadImage('Assets/backdropMain.jpg');
-  backdropMain = loadImage('/backdropMain.jpg');
+  backdropMain = loadImage('Assets/backdropMain.png');
+  explosion = loadImage('Assets/.png');
+  bomb = loadImage('Assets/bomb.png');
+  apple = loadImage('Assets/apple.png');
+  banana = loadImage('Assets/banana.png');
+  coconut = loadImage('Assets/coconut.png');
+  pineapple = loadImage('Assets/pineapple.png');
+  watermelon = loadImage('Assets/watermelon.png');
+  orange = loadImage('Assets/orange.png');
 }
 function draw() {
   background(255);
