@@ -1,7 +1,29 @@
 function setup() {
   frameRate(120);
   createCanvas(1000, 700);
+  waves();
+  sounds.titleScreen();
+}
+function preload() {
+  //Sound effects
+  titleScreen = loadSound('Music/Title Screen.mp3');
+  fruitSlice = loadSound('Music/Fruit Slice.mp3');
+  bombSlice = loadSound('Music/Bomb Slice.mp3');
 }
 function draw() {
-  background(100);
+  background(255);
+  //Display waves at the start of a wave
+  if(displayWaves) {textSize(50); text("Wave " + stats.wave, 430, 330);}
 }
+function waves() {
+  setTimeout(waves, 100000);
+  stats.fallen = 0;
+  stats.wave++;
+  displayWaves = true;
+  setTimeout(() => displayWaves = false, 2000);
+}
+const sounds = {
+  titleScreen: () => titleScreen.play(),
+  fruitSlice: () => fruitSlice.play(),
+  bombSlice: () => bombSlice.play()
+};
