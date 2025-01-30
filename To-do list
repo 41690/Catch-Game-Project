@@ -10,4 +10,4 @@ add music: bomb slice +, fruit slice +, title screen +, main music -, fruit fall
 create images for fruit and bomb objects #
 create images for animations -
 allow sword and fruit classes to work with each other #
-create title screen -
+create title screen - (just shows loading... at the moment)
