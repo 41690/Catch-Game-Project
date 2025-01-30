@@ -12,21 +12,20 @@ function preload() {
   bombSlice = loadSound('Music/Bomb Slice.mp3');
   //images
   backdropMain = loadImage('Assets/backdropMain.jpg');
+  backdropMain = loadImage('/backdropMain.jpg');
 }
 function draw() {
   background(255);
   //Display waves at the start of a wave
+  if(displayWaves) {textSize(50); text("Wave " + stats.wave, 430, 330);}
   image(backdropMain, 0, 0, width, height, 0, 0, backdropMain.width, backdropMain.height, COVER);
-  if(displayWaves) {
-    fill(227, 23, 23); stroke(0); strokeWeight(5); textSize(110); 
-    text("Wave " + stats.wave, 300, 380);
-  }
 }
 function waves() {
-  stats.waves++;
+  setTimeout(waves, 100000);
+  stats.fallen = 0;
+  stats.wave++;
   displayWaves = true;
   setTimeout(() => displayWaves = false, 2000);
-  setTimeout(waves, 50000);
 }
 const sounds = {
   titleScreen: () => titleScreen.play(),
