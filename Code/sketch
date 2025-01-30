@@ -18,7 +18,6 @@ function draw() {
   //Display waves at the start of a wave
   if(displayWaves) {textSize(50); text("Wave " + stats.wave, 430, 330);}
   
-  let bomb = createImage(66,66)
 }
 function waves() {
   setTimeout(waves, 100000);
