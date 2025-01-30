@@ -58,9 +58,11 @@ class bombs extends interactable {
 interactables = [];
 function spawnFruit() {
   setTimeout(spawnFruit, 1000);
-  do {
-    
-  } while(x == 0)
+  i = 0;
+  while(interactables[i] != undefined) i++;
+  assignedX = random(0,1000);
+  posNeg = assignedX > 500 ? 1 : -1;
+  interactables[i] = new interactable(720, assignedX, random(-5, 5) * posNeg, 5 + random(0,2), int(random(0, 5)));
 }
 function spawnBomb() {
   bombTimer = waves < 10 ? 20000 - waves * 1000 : 10000;
