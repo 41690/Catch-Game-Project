@@ -18,10 +18,15 @@ class interactable {
   set YVel(set) {this.yvel = set;}
   //functions
   //gravity for interactables
-  static gravity() {this.yvel--;}
+  gravity() {this.yvel--;}
   //tests if y position is above a certain value, if true it will call function 'fell' which deletes the object, it also increases value of stats.fallen if object is a fruit
-  static testYPos(i) {if(this.YPos > 800) interactables[i].fell();}
-  static move() {this.XPos += this.XVel;  this.YPos += this.YVel;}
+  move() {this.XPos += this.XVel; this.YPos += this.YVel;}
+  testYPos(i) {if(this.YPos > 800) interactable.fell(i);}
+  fell(i) {
+    if(interactables.type === undefined) {bombs.fell(i);} 
+    else {fruits.fell(i);}
+    delete interactables[i];
+  }
 }
 class fruits extends interactable {
   constructor(xpos, ypos, xvelocity, yvelocity, type) {
@@ -35,6 +40,7 @@ class fruits extends interactable {
     stats.score += 10;
     sounds.fruitSlice();
     cutAnimation(); //this is currently an empty function
+    delete interactables[i];
   }
 }
 class bombs extends interactable {
@@ -48,4 +54,15 @@ class bombs extends interactable {
     sounds.bombSlice();
     explodeAnimation(); //this is currently an empty function
   }
+}
+interactables = [];
+function spawnFruit() {
+  setTimeout(spawnFruit, 1000);
+  do {
+    
+  } while(x == 0)
+}
+function spawnBomb() {
+  bombTimer = waves < 10 ? 20000 - waves * 1000 : 10000;
+  setTimeout(spawnBomb, bombTimer);
 }
