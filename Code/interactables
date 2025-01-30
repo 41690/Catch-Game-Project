@@ -1,31 +1,47 @@
 class interactable {
-  constructor(xpos, ypos, xvel, yvel) {
+  constructor(xpos, ypos, xvel, yvel, type) {
     this.xpos = xpos;
     this.ypos = ypos;
     this.xvel = xvel;
     this.yvel = yvel;
+    this.type = type;
   }
   get XPos() {return this.xpos;}
   get YPos() {return this.ypos;} 
-  get XVel() {return this.xpel}
-  get YVel() {return this.ypel}
+  get XVel() {return this.xvel;}
+  get YVel() {return this.yvel;}
   set XPos(set) {this.xpos = set;}
   set YPos(set) {this.ypos = set;}
   set XVel(set) {this.xvel = set;}
   set YVel(set) {this.yvel = set;}
-  static Gravity() {}
+  static gravity() {this.yvel--;}
+  static testYPos(i) {if(this.YPos > 800) interactables[i].fell();}
+  static move() {
+    this.XPos += this.XVel;
+    this.YPos += this.YVel;
+  }
 }
 class fruits extends interactable {
   constructor(xpos, ypos, xvelocity, yvelocity, type) {
     super(xpos, ypos, xvelocity, yvelocity);
-    this.type = type;
+    this.type = type; //type is for fruit diversity (e.g watermelon, orange, apple)
   }
   get Type() {return this.type;}
+  static fell() {}
+  //add score, cut animation
+  static cut() {
+    Stats.score += 10;
+    cutAnimation(); //this is currently an empty function
+  }
 }
 class bombs extends interactable {
   constructor(xpos, ypos, xvelocity, yvelocity) {
     super(xpos, ypos, xvelocity, yvelocity);
   }
-  static Explode() {}
-  static Move() {}
+  static fell() {}
+  static cut() {
+    //lower health, explode animation
+    Stats.health--;
+    explodeAnimation(); //this is currently an empty function
+  }
 }
