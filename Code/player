@@ -1,14 +1,30 @@
 const sword = {
   XPosLastFrame: 0,
   YPosLastFrame: 0,
-  updateX: () => XPosLastFrame = mouseX,
-  updateY: () => YPosLastFrame = mouseY,
-  getSpeed: () => dist(mouseX, mouseY, sword.XPosLastFrame, sword.YPosLastFrame)
+  updateX: () => (XPosLastFrame = mouseX),
+  updateY: () => (YPosLastFrame = mouseY),
+  getSpeed: () =>
+    dist(mouseX, mouseY, sword.XPosLastFrame, sword.YPosLastFrame),
 };
-function testCollision() {}
+function testCollision() {
+  for (let i = 0; i < Interactable.length; i++) {
+    if (Interactable[i] != undefined) {
+      if (
+        dist(
+          mouseX - 40,
+          mouseY - 40,
+          Interactable[i].XPos,
+          Interactable[i].YPos
+        ) < 50
+      ) {
+        interactable.cut(i);
+      }
+    }
+  }
+}
 const stats = {
   health: 5,
   score: 0,
-  fallen: 0, //game ends after fallen reaches 5 to prevent easily advancing waves by afking. This stat resets every wave.
-  wave: 0
+  fallen: 0, //game ends after fallen reaches 3 to prevent easily advancing waves by afking. This stat resets every wave.
+  wave: 0,
 };
