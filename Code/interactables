@@ -7,89 +7,196 @@ class interactable {
     this.type = type;
   }
   //getters
-  get XPos() {return this.xpos;}
-  get YPos() {return this.ypos;} 
-  get XVel() {return this.xvel;}
-  get YVel() {return this.yvel;}
-  //setters
-  set XPos(set) {this.xpos = set;}
-  set YPos(set) {this.ypos = set;}
-  set XVel(set) {this.xvel = set;}
-  set YVel(set) {this.yvel = set;}
-  //functions
-  //gravity for interactables
-  gravity() {this.yvel += 0.2;}
-  //tests if y position is above a certain value, if true it will call function 'fell' which deletes the object, it also increases value of stats.fallen if object is a fruit
-  move() {this.XPos += this.XVel; this.YPos += this.YVel;}
-  fell() {stats.fallen++; console.log("A")}
-}
-class fruits extends interactable {
-  constructor(xpos, ypos, xvelocity, yvelocity, type) {
-    super(xpos, ypos, xvelocity, yvelocity);
-    this.type = type; //type is for fruit diversity (e.g watermelon, orange, apple)
+  get XPos() {
+    return this.xpos;
   }
-  get Type() {return this.type;} //type does not require a setter as it is a constant value
-  //add score, cut animation
-  cut() {
+  get YPos() {
+    return this.ypos;
+  }
+  get XVel() {
+    return this.xvel;
+  }
+  get YVel() {
+    return this.yvel;
+  }
+  get Type() {
+    return this.type;
+  }
+  //setters
+  set XPos(set) {
+    this.xpos = set;
+  }
+  set YPos(set) {
+    this.ypos = set;
+  }
+  set XVel(set) {
+    this.xvel = set;
+  }
+  set YVel(set) {
+    this.yvel = set;
+  }
+  //functions
+  //gravity for Interactable
+  gravity() {
+    this.yvel += 0.2;
+  }
+  //tests if y position is above a certain value, if true it will call function 'fell' which deletes the object, it also increases value of stats.fallen if object is a fruit
+  move() {
+    this.XPos += this.XVel;
+    this.YPos += this.YVel;
+  }
+  fell(i) {
+    if (Interactable[i].type == 6) {
+      stats.score += 5;
+    } else {
+      stats.fallen++;
+    }
+  }
+  static cut(i) {
+    if (Interactable[i].type == 6) {
+      bomb.cutBomb(i);
+    } else {
+      fruit.cutFruit(i);
+    }
+  }
+}
+class fruit extends interactable {
+  constructor(xpos, ypos, xvelocity, yvelocity, type) {
+    super(xpos, ypos, xvelocity, yvelocity, type);
+  }
+  static cutFruit(i) {
     stats.score += 10;
     sounds.fruitSlice();
-    cutAnimation(); //this is currently an empty function
-    delete interactables[i];
+    fruit.splatterAnimation(i);
+    delete Interactable[i];
   }
+  static splatterAnimation() {}
 }
-class bombs extends interactable {
-  constructor(xpos, ypos, xvelocity, yvelocity) {
-    super(xpos, ypos, xvelocity, yvelocity);
+class bomb extends interactable {
+  constructor(xpos, ypos, xvelocity, yvelocity, type) {
+    super(xpos, ypos, xvelocity, yvelocity, type);
   }
-  fell(i) {stats.score += 5; delete interactables[i]}
-  cut() {
+  static cutBomb(i) {
     //lower health, explode animation
     stats.health--;
     sounds.bombSlice();
-    explodeAnimation(); //this is currently an empty function
+    let j = 0;
+    while (CutEffects[j] != undefined) j++;
+    CutEffects[j] = new cutEffects(
+      Interactable[i].XPos,
+      Interactable[i].YPos,
+      Interactable[i].Type
+    );
+    delete Interactable[i];
   }
 }
-interactables = [];
-function spawnInteractable() {
-  setTimeout(spawnInteractable, 1000);
+class cutEffects {
+  constructor(xpos, ypos, type) {
+    this.xpos = xpos;
+    this.ypos = ypos;
+    this.type = type;
+    this.timer = 200;
+  }
+  //getters
+  get XPos() {
+    return this.xpos;
+  }
+  get YPos() {
+    return this.ypos;
+  }
+  get Type() {
+    return this.type;
+  }
+  get Timer() {
+    return this.timer;
+  }
+  //setters
+  set XPos(set) {
+    this.xpos = set;
+  }
+  set YPos(set) {
+    this.ypos = set;
+  }
+  set Timer(set) {
+    this.timer = set;
+  }
+  static drawEffects() {
+    for (let i = 0; i < CutEffects.length; i++) {
+      if (CutEffects[i] != undefined)
+        image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+    }
+  }
+  static deleteEffect() {
+    for (let i = 0; i < CutEffects.length; i++) {
+      if (CutEffects[i] != undefined) {
+        CutEffects[i].Timer--;
+        if (CutEffects[i].Timer < 0) delete CutEffects[i];
+      }
+    }
+  }
+}
+CutEffects = [];
+Interactable = [];
+function spawnFruit() {
+  setTimeout(spawnFruit, 1000);
   i = 0;
-  while(interactables[i] != undefined) i++;
+  while (Interactable[i] != undefined) i++;
   assignedX = random(300, 700);
   posNeg = assignedX < 500 ? 1 : -1;
-  interactables[i] = new interactable(assignedX, 720, random(-3, 3) * posNeg, -12 - random(0,4), int(random(0, 5)));
+  Interactable[i] = new fruit(
+    assignedX,
+    720,
+    random(-3, 3) * posNeg,
+    -12 - random(0, 4),
+    int(random(0, 5))
+  );
 }
 function spawnBomb() {
-  bombTimer = waves < 10 ? 20000 - waves * 1000 : 10000;
-  setTimeout(spawnInteractable(6), bombTimer);
+  setTimeout(spawnBomb, (20 - stats.wave) * 100);
+  i = 0;
+  while (Interactable[i] != undefined) i++;
+  assignedX = random(300, 700);
+  posNeg = assignedX < 500 ? 1 : -1;
+  Interactable[i] = new bomb(
+    assignedX,
+    720,
+    random(-3, 3) * posNeg,
+    -12 - random(0, 4),
+    6
+  );
 }
-function drawInteractables(i) {
-    switch(interactables[i].type) {
-      case 0:
-        image(apple, interactables[i].XPos, interactables[i].YPos, 80, 80);
-        break;
-      case 1:
-        image(banana, interactables[i].XPos, interactables[i].YPos, 80, 80);
-        break;
-      case 2:
-        image(coconut, interactables[i].XPos, interactables[i].YPos, 80, 80);
-        break;
-      case 3:
-        image(orange, interactables[i].XPos, interactables[i].YPos, 80, 80);
-        break;
-      case 4:
-        image(pineapple, interactables[i].XPos, interactables[i].YPos, 80, 80);
-        break;
-      case 5:
-        image(watermelon, interactables[i].XPos, interactables[i].YPos, 80, 80);
-        break;
-      default:
-        image(bomb, interactables[i].XPos, interactables[i].YPos, 80, 80);
-        break;
+function drawInteractable(i) {
+  switch (Interactable[i].type) {
+    case 0:
+      image(apple, Interactable[i].XPos, Interactable[i].YPos, 80, 80);
+      break;
+    case 1:
+      image(banana, Interactable[i].XPos, Interactable[i].YPos, 80, 80);
+      break;
+    case 2:
+      image(coconut, Interactable[i].XPos, Interactable[i].YPos, 80, 80);
+      break;
+    case 3:
+      image(orange, Interactable[i].XPos, Interactable[i].YPos, 80, 80);
+      break;
+    case 4:
+      image(pineapple, Interactable[i].XPos, Interactable[i].YPos, 80, 80);
+      break;
+    case 5:
+      image(watermelon, Interactable[i].XPos, Interactable[i].YPos, 80, 80);
+      break;
+    default:
+      image(bombImg, Interactable[i].XPos, Interactable[i].YPos, 80, 80);
+      break;
   }
 }
-function effectInteractables() {for(let i = 0; i < interactables.length; i++) {if(interactables[i] != undefined) {
-    interactables[i].move();
-    interactables[i].gravity();
-    drawInteractables(i);
-    if(interactables[i].YPos > 800) interactables[i].fell(i);
-}}}
+function effectInteractable() {
+  for (let i = 0; i < Interactable.length; i++) {
+    if (Interactable[i] != undefined) {
+      Interactable[i].move();
+      Interactable[i].gravity();
+      drawInteractable(i);
+      if (Interactable[i].YPos > 800) Interactable[i].fell(i);
+    }
+  }
+}
