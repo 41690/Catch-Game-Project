@@ -21,6 +21,7 @@ function preload() {
   pineapple = loadImage("Assets/pineapple.png");
   watermelon = loadImage("Assets/watermelon.png");
   orange = loadImage("Assets/orange.png");
+  orangeSplat = loadImage("Assets/orange splat.png");
 }
 function draw() {
   background(255);
@@ -48,7 +49,7 @@ function draw() {
   }
 }
 function waves() {
-  setTimeout(waves, 100000);
+  setTimeout(waves, 10000);
   stats.fallen = 0;
   stats.wave++;
   displayWaves = true;
