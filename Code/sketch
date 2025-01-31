@@ -4,38 +4,68 @@ function setup() {
   createCanvas(1000, 700);
   waves();
   sounds.titleScreen();
+  spawnFruit();
 }
 function preload() {
   //Sound effects
-  titleScreen = loadSound('Music/Title Screen.mp3');
-  fruitSlice = loadSound('Music/Fruit Slice.mp3');
-  bombSlice = loadSound('Music/Bomb Slice.mp3');
+  titleScreen = loadSound("Music/Title Screen.mp3");
+  fruitSlice = loadSound("Music/Fruit Slice.mp3");
+  bombSlice = loadSound("Music/Bomb Slice.mp3");
   //images
-  backdropMain = loadImage('Assets/backdropMain.png');
-  explosion = loadImage('Assets/.png');
-  bomb = loadImage('Assets/bomb.png');
-  apple = loadImage('Assets/apple.png');
-  banana = loadImage('Assets/banana.png');
-  coconut = loadImage('Assets/coconut.png');
-  pineapple = loadImage('Assets/pineapple.png');
-  watermelon = loadImage('Assets/watermelon.png');
-  orange = loadImage('Assets/orange.png');
+  backdropMain = loadImage("Assets/backdropMain.png");
+  explosion = loadImage("Assets/explosion.png");
+  bombImg = loadImage("Assets/bomb.png");
+  apple = loadImage("Assets/apple.png");
+  banana = loadImage("Assets/banana.png");
+  coconut = loadImage("Assets/coconut.png");
+  pineapple = loadImage("Assets/pineapple.png");
+  watermelon = loadImage("Assets/watermelon.png");
+  orange = loadImage("Assets/orange.png");
 }
 function draw() {
   background(255);
   //Display waves at the start of a wave
-  if(displayWaves) {textSize(50); text("Wave " + stats.wave, 430, 330);}
-  image(backdropMain, 0, 0, width, height, 0, 0, backdropMain.width, backdropMain.height, COVER);
+  image(
+    backdropMain,
+    0,
+    0,
+    width,
+    height,
+    0,
+    0,
+    backdropMain.width,
+    backdropMain.height,
+    COVER
+  );
+  cutEffects.drawEffects();
+  cutEffects.deleteEffect();
+  effectInteractable();
+  testCollision();
+  drawHearts();
+  if (displayWaves) {
+    textSize(50);
+    text("Wave " + stats.wave, 430, 330);
+  }
 }
 function waves() {
   setTimeout(waves, 100000);
   stats.fallen = 0;
   stats.wave++;
   displayWaves = true;
-  setTimeout(() => displayWaves = false, 2000);
+  setTimeout(() => (displayWaves = false), 2000);
 }
 const sounds = {
   titleScreen: () => titleScreen.play(),
   fruitSlice: () => fruitSlice.play(),
-  bombSlice: () => bombSlice.play()
+  bombSlice: () => bombSlice.play(),
 };
+function mouseClicked() {
+  spawnBomb();
+}
+function drawHearts() {
+  textSize(50);
+  for (let i = 5; i > 0; i--) {
+    rb = i > stats.health ? "🖤" : "❤️";
+    text(rb, 980 - i * 60, 50);
+  }
+}
