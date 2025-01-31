@@ -46,14 +46,14 @@ class interactable {
     this.YPos += this.YVel;
   }
   fell(i) {
-    if (Interactable[i].type == 6) {
+    if (Interactable[i].Type == 6) {
       stats.score += 5;
     } else {
       stats.fallen++;
     }
   }
   static cut(i) {
-    if (Interactable[i].type == 6) {
+    if (Interactable[i].Type == 6) {
       bomb.cutBomb(i);
     } else {
       fruit.cutFruit(i);
@@ -67,7 +67,13 @@ class fruit extends interactable {
   static cutFruit(i) {
     stats.score += 10;
     sounds.fruitSlice();
-    fruit.splatterAnimation(i);
+    let j = 0;
+    while (CutEffects[j] != undefined) j++;
+    CutEffects[j] = new cutEffects(
+      Interactable[i].XPos,
+      Interactable[i].YPos,
+      Interactable[i].type
+    );
     delete Interactable[i];
   }
   static splatterAnimation() {}
@@ -85,7 +91,7 @@ class bomb extends interactable {
     CutEffects[j] = new cutEffects(
       Interactable[i].XPos,
       Interactable[i].YPos,
-      Interactable[i].Type
+      6
     );
     delete Interactable[i];
   }
@@ -95,7 +101,7 @@ class cutEffects {
     this.xpos = xpos;
     this.ypos = ypos;
     this.type = type;
-    this.timer = 200;
+    this.timer = 40;
   }
   //getters
   get XPos() {
@@ -122,8 +128,10 @@ class cutEffects {
   }
   static drawEffects() {
     for (let i = 0; i < CutEffects.length; i++) {
-      if (CutEffects[i] != undefined)
-        image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+      if (CutEffects[i] != undefined) {
+          if(CutEffects[i].Type == 6) image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+          if(CutEffects[i].Type != 6) image(orangeSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        }
     }
   }
   static deleteEffect() {
@@ -152,7 +160,8 @@ function spawnFruit() {
   );
 }
 function spawnBomb() {
-  setTimeout(spawnBomb, (20 - stats.wave) * 100);
+  bombTimer = stats.wave < 15 ? (20 - stats.wave) * 100 : 500;
+  setTimeout(spawnBomb, bombTimer);
   i = 0;
   while (Interactable[i] != undefined) i++;
   assignedX = random(300, 700);
@@ -166,7 +175,7 @@ function spawnBomb() {
   );
 }
 function drawInteractable(i) {
-  switch (Interactable[i].type) {
+  switch (Interactable[i].Type) {
     case 0:
       image(apple, Interactable[i].XPos, Interactable[i].YPos, 80, 80);
       break;
