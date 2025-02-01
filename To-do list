@@ -12,3 +12,4 @@ create images for animations # (bomb effect done)
 allow sword and fruit classes to work with each other +
 create title screen -
 prevent objects from spawning while wave counter is displayed -
+make it so that each fruit creates its respective splat colour when cut - 
