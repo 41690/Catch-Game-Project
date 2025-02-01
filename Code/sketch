@@ -24,6 +24,7 @@ function preload() {
   orangeSplat = loadImage("Assets/orange splat.png");
   redSplat = loadImage("Assets/red splat.png");
   yellowSplat = loadImage("Assets/yellow splat.png");
+  clearSplat = loadImage("Assets/clear splat.png");
 }
 function draw() {
   background(255);
