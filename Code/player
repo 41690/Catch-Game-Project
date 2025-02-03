@@ -7,7 +7,6 @@ const sword = {
     dist(mouseX, mouseY, sword.XPosLastFrame, sword.YPosLastFrame),
 };
 function testCollision() {
-  console.log(sword.getSpeed())
   for (let i = 0; i < Interactable.length; i++) {
     if (Interactable[i] != undefined) {
       if (
