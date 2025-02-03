@@ -127,32 +127,33 @@ class cutEffects {
     this.timer = set;
   }
   static drawEffects() {
-    for (let i = 0; i < CutEffects.length; i++) {
+    for(let i=0; i<CutEffects.length; i++){
       if (CutEffects[i] != undefined) {
-        switch(CutEffects[i].Type){
-          case 0:
-            image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 1:
-            image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 2:
-            image(clearSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 3:
-            image(orangeSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 4:
-            image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 5:
-            image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 6:
-            image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-        }
-      }
+    switch(CutEffects[i].Type){
+      case 0:
+        image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 1:
+        image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 2:
+        image(clearSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 3:
+        image(orangeSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 4:
+        image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 5:
+        image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 6:
+        image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+      
     }
+    }
+  }
   }
   static deleteEffect() {
     for (let i = 0; i < CutEffects.length; i++) {
