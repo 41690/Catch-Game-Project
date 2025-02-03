@@ -21,22 +21,62 @@ function preload() {
   pineapple = loadImage("Assets/pineapple.png");
   watermelon = loadImage("Assets/watermelon.png");
   orange = loadImage("Assets/orange.png");
-  orangeSplat = loadImage("Assets/orange splat.png");
-  redSplat = loadImage("Assets/red splat.png");
-  yellowSplat = loadImage("Assets/yellow splat.png");
-  clearSplat = loadImage("Assets/clear splat.png");
+  orangeSplat = loadImage("Assets/orangeSplat.png");
+  redSplat = loadImage("Assets/redSplat.png");
+  yellowSplat = loadImage("Assets/yellowSplat.png");
+  clearSplat = loadImage("Assets/clearSplat.png");
+  appleHalf1 = loadImage("Assets/apple_half_1.png");
+  appleHalf2 = loadImage("Assets/apple_half_2.png");
+  bananaHalf1 = loadImage("Assets/banana_half_1.png");
+  bananaHalf2 = loadImage("Assets/banana_half_2.png");
+  orangeHalf1 = loadImage("Assets/orange_half_1.png");
+  orangeHalf2 = loadImage("Assets/orange_half_2.png");
+  coconutHalf1 = loadImage("Assets/coconut_half_1.png");
+  coconutHalf2 = loadImage("Assets/coconut_half_2.png");
+  pineappleHalf1 = loadImage("Assets/pineapple_half_1.png");
+  pineappleHalf2 = loadImage("Assets/pineapple_half_2.png");
+  watermelonHalf1 = loadImage("Assets/watermelon_half_1.png");
+  watermelonHalf2 = loadImage("Assets/watermelon_half_1.png");
 }
 function draw() {
   background(255);
   //Display waves at the start of a wave
-  image(backdropMain, 0, 0, width, height, 0, 0, backdropMain.width, backdropMain.height, COVER);
+  image(
+    backdropMain,
+    0,
+    0,
+    width,
+    height,
+    0,
+    0,
+    backdropMain.width,
+    backdropMain.height,
+    COVER
+  );
   cutEffects.drawEffects();
   cutEffects.deleteEffect();
   effectInteractable();
   testCollision();
-  updateLastPosXYSword();
   drawHearts();
-  if (displayWaves) {textSize(50); text("Wave " + stats.wave, 430, 330);}
+  if (displayWaves) {
+    textSize(50);
+    text("Wave " + stats.wave, 430, 330);
+  }
+}
+function waves() {
+  setTimeout(waves, 10000);
+  stats.fallen = 0;
+  stats.wave++;
+  displayWaves = true;
+  setTimeout(() => (displayWaves = false), 2000);
+}
+const sounds = {
+  titleScreen: () => titleScreen.play(),
+  fruitSlice: () => fruitSlice.play(),
+  bombSlice: () => bombSlice.play(),
+};
+function mouseClicked() {
+  spawnBomb();
 }
 function drawHearts() {
   textSize(50);
