@@ -29,42 +29,14 @@ function preload() {
 function draw() {
   background(255);
   //Display waves at the start of a wave
-  image(
-    backdropMain,
-    0,
-    0,
-    width,
-    height,
-    0,
-    0,
-    backdropMain.width,
-    backdropMain.height,
-    COVER
-  );
+  image(backdropMain, 0, 0, width, height, 0, 0, backdropMain.width, backdropMain.height, COVER);
   cutEffects.drawEffects();
   cutEffects.deleteEffect();
   effectInteractable();
   testCollision();
+  updateLastPosXYSword();
   drawHearts();
-  if (displayWaves) {
-    textSize(50);
-    text("Wave " + stats.wave, 430, 330);
-  }
-}
-function waves() {
-  setTimeout(waves, 10000);
-  stats.fallen = 0;
-  stats.wave++;
-  displayWaves = true;
-  setTimeout(() => (displayWaves = false), 2000);
-}
-const sounds = {
-  titleScreen: () => titleScreen.play(),
-  fruitSlice: () => fruitSlice.play(),
-  bombSlice: () => bombSlice.play(),
-};
-function mouseClicked() {
-  spawnBomb();
+  if (displayWaves) {textSize(50); text("Wave " + stats.wave, 430, 330);}
 }
 function drawHearts() {
   textSize(50);
