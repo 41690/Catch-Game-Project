@@ -146,7 +146,7 @@ class cutEffects {
 CutEffects = [];
 Interactable = [];
 function spawnFruit() {
-  setTimeout(spawnFruit, 1000);
+  setTimeout(spawnFruit, 500);
   i = 0;
   while (Interactable[i] != undefined) i++;
   assignedX = random(300, 700);
