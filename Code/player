@@ -1,8 +1,8 @@
 const sword = {
   XPosLastFrame: 0,
   YPosLastFrame: 0,
-  updateX: () => (XPosLastFrame = mouseX),
-  updateY: () => (YPosLastFrame = mouseY),
+  updateX: () => (sword.XPosLastFrame = mouseX),
+  updateY: () => (sword.YPosLastFrame = mouseY),
   getSpeed: () =>
     dist(mouseX, mouseY, sword.XPosLastFrame, sword.YPosLastFrame),
 };
@@ -15,16 +15,43 @@ function testCollision() {
           mouseY - 40,
           Interactable[i].XPos,
           Interactable[i].YPos
-        ) < 50
+        ) < 50 &&
+        sword.getSpeed() > 30
       ) {
         interactable.cut(i);
       }
     }
   }
 }
+function swordEffect() {for(let i = 0; i < 10; i++) {
+    placesArray[i] = placesArray[i + 1];
+    fill(255);
+    circle(placesArray[i].X, placesArray[i].Y, 10);
+  }
+}
 const stats = {
   health: 5,
   score: 0,
   fallen: 0, //game ends after fallen reaches 3 to prevent easily advancing waves by afking. This stat resets every wave.
-  wave: 0,
+  wave: 20,
 };
+function updateLastPosXYSword() {
+  sword.updateX();
+  sword.updateY();
+}
+function waves() {
+  setTimeout(waves, 10000);
+  stats.fallen = 0;
+  stats.wave++;
+  displayWaves = true;
+  setTimeout(() => (displayWaves = false), 2000);
+}
+const sounds = {
+  titleScreen: () => titleScreen.play(),
+  fruitSlice: () => fruitSlice.play(),
+  bombSlice: () => bombSlice.play()
+};
+function mouseClicked() {spawnBomb();}
+function displayScore() {
+
+}
