@@ -33,7 +33,7 @@ const stats = {
   health: 5,
   score: 0,
   fallen: 0, //game ends after fallen reaches 3 to prevent easily advancing waves by afking. This stat resets every wave.
-  wave: 20,
+  wave: 0,
 };
 function updateLastPosXYSword() {
   sword.updateX();
@@ -53,5 +53,7 @@ const sounds = {
 };
 function mouseClicked() {spawnBomb();}
 function displayScore() {
-
+  textSize(30);
+  fill(255);
+  text("Score: " + stats.score, 0, 30);
 }
