@@ -23,6 +23,12 @@ function testCollision() {
     }
   }
 }
+function swordEffect() {for(let i = 0; i < 10; i++) {
+    placesArray[i] = placesArray[i + 1];
+    fill(255);
+    circle(placesArray[i].X, placesArray[i].Y, 10);
+  }
+}
 const stats = {
   health: 5,
   score: 0,
@@ -43,6 +49,9 @@ function waves() {
 const sounds = {
   titleScreen: () => titleScreen.play(),
   fruitSlice: () => fruitSlice.play(),
-  bombSlice: () => bombSlice.play(),
+  bombSlice: () => bombSlice.play()
 };
 function mouseClicked() {spawnBomb();}
+function displayScore() {
+
+}
