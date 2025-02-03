@@ -48,8 +48,10 @@ class interactable {
   fell(i) {
     if (Interactable[i].Type == 6) {
       stats.score += 5;
+      delete Interactable[i];
     } else {
       stats.fallen++;
+      delete Interactable[i];
     }
   }
   static cut(i) {
@@ -127,7 +129,7 @@ class cutEffects {
     this.timer = set;
   }
   static drawEffects() {
-    for(let i=0; i<CutEffects.length; i++){
+    for(let i = 0; i<CutEffects.length; i++){
       if (CutEffects[i] != undefined) {
     switch(CutEffects[i].Type){
       case 0:
@@ -150,7 +152,6 @@ class cutEffects {
         break;
       case 6:
         image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-      
     }
     }
   }
@@ -175,7 +176,7 @@ function spawnFruit() {
   Interactable[i] = new fruit(
     assignedX,
     720,
-    random(-3, 3) * posNeg,
+    random(-10, 10) * posNeg,
     -12 - random(0, 4),
     int(random(0, 5))
   );
@@ -227,6 +228,15 @@ function effectInteractable() {
       Interactable[i].gravity();
       drawInteractable(i);
       if (Interactable[i].YPos > 800) Interactable[i].fell(i);
+    }
+  }
+}
+function interactablesBounce() {
+  for(let i = 0; i < Interactable.length; i++) {
+    if (Interactable[i] != undefined) {
+      if(Interactable[i].XPos > width - 80 || Interactable[i].XPos < 0) {
+        Interactable[i].XVel *= -1;
+      }
     }
   }
 }
