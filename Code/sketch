@@ -53,6 +53,7 @@ function draw() {
     text("Wave " + stats.wave, 430, 330);
   }
   displayScore();
+  interactablesBounce();
 }
 function mouseClicked() {
   spawnBomb();
