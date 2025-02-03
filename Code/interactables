@@ -129,9 +129,29 @@ class cutEffects {
   static drawEffects() {
     for (let i = 0; i < CutEffects.length; i++) {
       if (CutEffects[i] != undefined) {
-          if(CutEffects[i].Type == 6) image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-          if(CutEffects[i].Type != 6) image(orangeSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        switch(CutEffects[i].Type){
+          case 0:
+            image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 1:
+            image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 2:
+            image(clearSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 3:
+            image(orangeSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 4:
+            image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 5:
+            image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 6:
+            image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
         }
+      }
     }
   }
   static deleteEffect() {
@@ -146,7 +166,7 @@ class cutEffects {
 CutEffects = [];
 Interactable = [];
 function spawnFruit() {
-  setTimeout(spawnFruit, 500);
+  setTimeout(spawnFruit, 1000);
   i = 0;
   while (Interactable[i] != undefined) i++;
   assignedX = random(300, 700);
