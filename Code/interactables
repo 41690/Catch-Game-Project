@@ -67,15 +67,15 @@ class fruit extends interactable {
     super(xpos, ypos, xvelocity, yvelocity, type);
   }
   static cutFruit(i) {
+    //raise score and play sound
     stats.score += 10;
     sounds.fruitSlice();
+    //search for an empty spot in CutEffects array
     let j = 0;
     while (CutEffects[j] != undefined) j++;
-    CutEffects[j] = new cutEffects(
-      Interactable[i].XPos,
-      Interactable[i].YPos,
-      Interactable[i].type
-    );
+    //creates instance
+    CutEffects[j] = new cutEffects(Interactable[i].XPos, Interactable[i].YPos, Interactable[i].type);
+    //deletes fruit
     delete Interactable[i];
   }
   static splatterAnimation() {}
@@ -85,16 +85,15 @@ class bomb extends interactable {
     super(xpos, ypos, xvelocity, yvelocity, type);
   }
   static cutBomb(i) {
-    //lower health, explode animation
+    //lower health and play sound
     stats.health--;
     sounds.bombSlice();
+    //search for an empty spot in CutEffects array
     let j = 0;
     while (CutEffects[j] != undefined) j++;
-    CutEffects[j] = new cutEffects(
-      Interactable[i].XPos,
-      Interactable[i].YPos,
-      6
-    );
+    //creates instance
+    CutEffects[j] = new cutEffects(Interactable[i].XPos, Interactable[i].YPos, 6);
+    //deletes bomb
     delete Interactable[i];
   }
 }
@@ -106,38 +105,22 @@ class cutEffects {
     this.timer = 40;
   }
   //getters
-  get XPos() {
-    return this.xpos;
-  }
-  get YPos() {
-    return this.ypos;
-  }
-  get Type() {
-    return this.type;
-  }
-  get Timer() {
-    return this.timer;
-  }
+  get XPos() {return this.xpos;}
+  get YPos() {return this.ypos;}
+  get Type() {return this.type;}
+  get Timer() {return this.timer;}
   //setters
-  set XPos(set) {
-    this.xpos = set;
-  }
-  set YPos(set) {
-    this.ypos = set;
-  }
-  set Timer(set) {
-    this.timer = set;
-  }
+  set XPos(set) {this.xpos = set;}
+  set YPos(set) {this.ypos = set;}
+  set Timer(set) {this.timer = set;}
   static drawEffects() {
-    for(let i = 0; i<CutEffects.length; i++){
-      if (CutEffects[i] != undefined) {
-    switch(CutEffects[i].Type){
+    for(let i = 0; i < CutEffects.length; i++) {if (CutEffects[i] != undefined) {switch(CutEffects[i].Type) {
       case 0:
         image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
         break;
       case 1:
-        image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-        break;
+          image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+          break;
       case 2:
         image(clearSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
         break;
@@ -152,9 +135,8 @@ class cutEffects {
         break;
       case 6:
         image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-    }
-    }
-  }
+        break;
+    }}}
   }
   static deleteEffect() {
     for (let i = 0; i < CutEffects.length; i++) {
@@ -168,33 +150,37 @@ class cutEffects {
 CutEffects = [];
 Interactable = [];
 function spawnFruit() {
-  setTimeout(spawnFruit, 1000);
-  i = 0;
-  while (Interactable[i] != undefined) i++;
-  assignedX = random(300, 700);
-  posNeg = assignedX < 500 ? 1 : -1;
-  Interactable[i] = new fruit(
-    assignedX,
-    720,
-    random(-10, 10) * posNeg,
-    -12 - random(0, 4),
-    int(random(0, 5))
-  );
+  setTimeout(spawnFruit, 750);
+  if(letSpawn) {
+    i = 0;
+    while (Interactable[i] != undefined) i++;
+    assignedX = random(300, 700);
+    posNeg = assignedX < 500 ? 1 : -1;
+    Interactable[i] = new fruit(
+      assignedX,
+      720,
+      random(-10, 10) * posNeg,
+      -12 - random(0, 4),
+      int(random(0, 5))
+    );
+  }
 }
 function spawnBomb() {
-  bombTimer = stats.wave < 15 ? (20 - stats.wave) * 100 : 500;
+  bombTimer = stats.wave < 15 ? (17.5 - stats.wave) * 100 : 250;
   setTimeout(spawnBomb, bombTimer);
-  i = 0;
-  while (Interactable[i] != undefined) i++;
-  assignedX = random(300, 700);
-  posNeg = assignedX < 500 ? 1 : -1;
-  Interactable[i] = new bomb(
-    assignedX,
-    720,
-    random(-3, 3) * posNeg,
-    -12 - random(0, 4),
-    6
-  );
+  if(letSpawn) {
+    i = 0;
+    while (Interactable[i] != undefined) i++;
+    assignedX = random(300, 700);
+    posNeg = assignedX < 500 ? 1 : -1;
+    Interactable[i] = new bomb(
+      assignedX,
+      720,
+      random(-3, 3) * posNeg,
+      -12 - random(0, 4),
+      6
+    );
+  }
 }
 function drawInteractable(i) {
   switch (Interactable[i].Type) {
