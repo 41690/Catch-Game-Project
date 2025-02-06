@@ -1,11 +1,4 @@
-displayWaves = false;
-function setup() {
-  frameRate(120);
-  createCanvas(1000, 700);
-  waves();
-  sounds.titleScreen();
-  spawnFruit();
-}
+let displayWaves;
 function preload() {
   //Sound effects
   titleScreen = loadSound("Music/Title Screen.mp3");
@@ -38,6 +31,16 @@ function preload() {
   watermelonHalf1 = loadImage("Assets/watermelon_half_1.png");
   watermelonHalf2 = loadImage("Assets/watermelon_half_1.png");
 }
+function setup() {
+  frameRate(120);
+  createCanvas(1000, 700);
+  sounds.titleScreen();
+}
+function startGame() {
+  waves();
+  spawnBomb();
+  spawnFruit();
+}
 function draw() {
   background(255);
   //Display waves at the start of a wave
@@ -47,21 +50,30 @@ function draw() {
   effectInteractable();
   testCollision();
   updateLastPosXYSword();
-  drawHearts();
-  if (displayWaves) {
-    textSize(50);
-    text("Wave " + stats.wave, 430, 330);
-  }
-  displayScore();
   interactablesBounce();
-}
-function mouseClicked() {
-  spawnBomb();
-}
-function drawHearts() {
+  strokeWeight(0);
+  //display player stats
   textSize(50);
-  for (let i = 5; i > 0; i--) {
-    rb = i > stats.health ? "🖤" : "❤️";
-    text(rb, 980 - i * 60, 50);
+  //display health
+  for (let i = 5; i > 0; i--) {heartColour = i > stats.health ? "🖤" : "❤️"; text(heartColour, 980 - i * 60, 50);}
+  //display wave number on wave start, textSize is already set to required amount (ln 53)
+  fill(255);
+  if (displayWaves) text("Wave " + stats.wave, 430, 330);
+  //display score
+  textSize(30);
+  text("Score: " + stats.score, 0, 30);
+  //draw sword
+  for(let i = 0; i < 10; i++) {
+    stroke('white')
+    strokeWeight(5);
+    line(placesX[i], placesY[i], placesX[i + 1], placesY[i + 1]);
+    placesX[10] = mouseX;
+    placesY[10] = mouseY;
+    placesX[i] = placesX[i + 1];
+    placesY[i] = placesY[i + 1];
   }
+}
+//temp method to start game
+function keyPressed() {
+  startGame();
 }
