@@ -4,6 +4,7 @@ class interactable {
     this.ypos = ypos;
     this.xvel = xvel;
     this.yvel = yvel;
+    //type is used for displaying correct asset for the interactable
     this.type = type;
   }
   //getters
@@ -36,14 +37,10 @@ class interactable {
     this.yvel = set;
   }
   //functions
-  //gravity for Interactable
-  gravity() {
-    this.yvel += 0.2;
-  }
-  //tests if y position is above a certain value, if true it will call function 'fell' which deletes the object, it also increases value of stats.fallen if object is a fruit
-  move() {
+  movement() {
     this.XPos += this.XVel;
     this.YPos += this.YVel;
+    this.yvel += 0.2;
   }
   fell(i) {
     if (Interactable[i].Type == 6) {
@@ -74,11 +71,14 @@ class fruit extends interactable {
     let j = 0;
     while (CutEffects[j] != undefined) j++;
     //creates instance
-    CutEffects[j] = new cutEffects(Interactable[i].XPos, Interactable[i].YPos, Interactable[i].type);
+    CutEffects[j] = new cutEffects(
+      Interactable[i].XPos,
+      Interactable[i].YPos,
+      Interactable[i].type
+    );
     //deletes fruit
     delete Interactable[i];
   }
-  static splatterAnimation() {}
 }
 class bomb extends interactable {
   constructor(xpos, ypos, xvelocity, yvelocity, type) {
@@ -92,7 +92,11 @@ class bomb extends interactable {
     let j = 0;
     while (CutEffects[j] != undefined) j++;
     //creates instance
-    CutEffects[j] = new cutEffects(Interactable[i].XPos, Interactable[i].YPos, 6);
+    CutEffects[j] = new cutEffects(
+      Interactable[i].XPos,
+      Interactable[i].YPos,
+      6
+    );
     //deletes bomb
     delete Interactable[i];
   }
@@ -105,38 +109,56 @@ class cutEffects {
     this.timer = 40;
   }
   //getters
-  get XPos() {return this.xpos;}
-  get YPos() {return this.ypos;}
-  get Type() {return this.type;}
-  get Timer() {return this.timer;}
+  get XPos() {
+    return this.xpos;
+  }
+  get YPos() {
+    return this.ypos;
+  }
+  get Type() {
+    return this.type;
+  }
+  get Timer() {
+    return this.timer;
+  }
   //setters
-  set XPos(set) {this.xpos = set;}
-  set YPos(set) {this.ypos = set;}
-  set Timer(set) {this.timer = set;}
+  set XPos(set) {
+    this.xpos = set;
+  }
+  set YPos(set) {
+    this.ypos = set;
+  }
+  set Timer(set) {
+    this.timer = set;
+  }
   static drawEffects() {
-    for(let i = 0; i < CutEffects.length; i++) {if (CutEffects[i] != undefined) {switch(CutEffects[i].Type) {
-      case 0:
-        image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-        break;
-      case 1:
-          image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-          break;
-      case 2:
-        image(clearSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-        break;
-      case 3:
-        image(orangeSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-        break;
-      case 4:
-        image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-        break;
-      case 5:
-        image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-        break;
-      case 6:
-        image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-        break;
-    }}}
+    for (let i = 0; i < CutEffects.length; i++) {
+      if (CutEffects[i] != undefined) {
+        switch (CutEffects[i].Type) {
+          case 0:
+            image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 1:
+            image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 2:
+            image(clearSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 3:
+            image(orangeSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 4:
+            image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 5:
+            image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+          case 6:
+            image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+            break;
+        }
+      }
+    }
   }
   static deleteEffect() {
     for (let i = 0; i < CutEffects.length; i++) {
@@ -149,37 +171,26 @@ class cutEffects {
 }
 CutEffects = [];
 Interactable = [];
-function spawnFruit() {
-  setTimeout(spawnFruit, 750);
-  if(letSpawn) {
+function spawnInteractable() {
+  randomParameter1 = stats.wave > 20 ? 20 : stats.wave;
+  isBomb = random(randomParameter1, 30) > 25;
+  setTimeout(spawnInteractable, 1000);
+  if (letSpawn) {
     i = 0;
     while (Interactable[i] != undefined) i++;
-    assignedX = random(300, 700);
-    posNeg = assignedX < 500 ? 1 : -1;
-    Interactable[i] = new fruit(
-      assignedX,
-      720,
-      random(-10, 10) * posNeg,
-      -12 - random(0, 4),
-      int(random(0, 5))
-    );
-  }
-}
-function spawnBomb() {
-  bombTimer = stats.wave < 15 ? (17.5 - stats.wave) * 100 : 250;
-  setTimeout(spawnBomb, bombTimer);
-  if(letSpawn) {
-    i = 0;
-    while (Interactable[i] != undefined) i++;
-    assignedX = random(300, 700);
-    posNeg = assignedX < 500 ? 1 : -1;
-    Interactable[i] = new bomb(
-      assignedX,
-      720,
-      random(-3, 3) * posNeg,
-      -12 - random(0, 4),
-      6
-    );
+    XPos = random(300, 700);
+    YPos = 720;
+    XVel = random(-10, 10);
+    YVel = -12 - random(0, 4);
+    if (!isBomb)
+      Interactable[i] = new fruit(
+        XPos,
+        YPos,
+        XVel,
+        YVel,
+        /*type*/ int(random(0, 5))
+      );
+    else Interactable[i] = new bomb(XPos, YPos, XVel, YVel, /*type*/ 6);
   }
 }
 function drawInteractable(i) {
@@ -210,19 +221,11 @@ function drawInteractable(i) {
 function effectInteractable() {
   for (let i = 0; i < Interactable.length; i++) {
     if (Interactable[i] != undefined) {
-      Interactable[i].move();
-      Interactable[i].gravity();
+      Interactable[i].movement();
       drawInteractable(i);
-      if (Interactable[i].YPos > 800) Interactable[i].fell(i);
-    }
-  }
-}
-function interactablesBounce() {
-  for(let i = 0; i < Interactable.length; i++) {
-    if (Interactable[i] != undefined) {
-      if(Interactable[i].XPos > width - 80 || Interactable[i].XPos < 0) {
+      if (Interactable[i].XPos > width - 80 || Interactable[i].XPos < 0)
         Interactable[i].XVel *= -1;
-      }
+      if (Interactable[i].YPos > 800) Interactable[i].fell(i);
     }
   }
 }
