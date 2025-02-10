@@ -38,8 +38,7 @@ function setup() {
 let displayWaves;
 function startGame() {
   waves();
-  spawnInteractable(false); //spawns fruit
-  spawnInteractable(true); //spawns bombs
+  spawnInteractable(); //spawns bombs and fruit
 }
 function displayVisuals() {
   cutEffects.drawEffects();
