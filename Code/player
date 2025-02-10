@@ -1,3 +1,14 @@
+const stats = {
+  health: 5,
+  score: 0,
+  fallen: 0, //game ends after fallen reaches 5, resets every wave.
+  wave: 0,
+};
+const sounds = {
+  titleScreen: () => titleScreen.play(),
+  fruitSlice: () => fruitSlice.play(),
+  bombSlice: () => bombSlice.play(),
+};
 const sword = {
   XPosLastFrame: 0,
   YPosLastFrame: 0,
@@ -6,6 +17,30 @@ const sword = {
   getSpeed: () =>
     dist(mouseX, mouseY, sword.XPosLastFrame, sword.YPosLastFrame),
 };
+//used to get speed of sword movement
+function updateLastPosXYSword() {
+  sword.updateX();
+  sword.updateY();
+}
+//arrays for sword particle locations
+placesX = [0, 0, 0, 0, 0, 0, 0];
+placesY = [0, 0, 0, 0, 0, 0, 0];
+function updateSwordParticles() {
+  for (let i = 0; i < 6; i++) {
+    placesX[6] = mouseX;
+    placesY[6] = mouseY;
+    placesX[i] = placesX[i + 1];
+    placesY[i] = placesY[i + 1];
+  }
+}
+//prevents visual error from moving quickly and then clicking
+function mousePressed() {
+  for (let i = 0; i < 6; i++) {
+    placesX[i] = mouseX;
+    placesY[i] = mouseY;
+  }
+}
+//tests if sword is cutting interactable
 function testCollision() {
   for (let i = 0; i < Interactable.length; i++) {
     if (Interactable[i] != undefined) {
@@ -16,40 +51,35 @@ function testCollision() {
           Interactable[i].XPos,
           Interactable[i].YPos
         ) < 50 &&
-        sword.getSpeed() > 15
-      ) {
+        mouseIsPressed &&
+        sword.getSpeed() > 10
+      )
         interactable.cut(i);
-      }
     }
   }
 }
-placesX = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-placesY = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-const stats = {
-  health: 5,
-  score: 0,
-  fallen: 0, //game ends after fallen reaches 3 to prevent easily advancing waves by afking. This stat resets every wave.
-  wave: 0,
-};
-function updateLastPosXYSword() {
-  sword.updateX();
-  sword.updateY();
-}
+//loops every 30 seconds
 function waves() {
   setTimeout(waves, 30000);
+  //reset fallen
   stats.fallen = 0;
+  //increase wave
   stats.wave++;
+  //prevents interactables from spawning during wave display
   letSpawn = false;
-  setTimeout(() => displayWaves = true, 2000);
+  setTimeout(() => (displayWaves = true), 2000);
   setTimeout(() => startNextWave(), 4000);
 }
 function startNextWave() {
-    letSpawn = true;
-    displayWaves = false;
-    if(stats.health != 5) stats.health++;
+  //allows interactables to spawn again
+  letSpawn = true;
+  //removes display of waves
+  displayWaves = false;
+  //increases health by one if health isnt at maximum
+  if (stats.health != 5) stats.health++;
 }
-const sounds = {
-  titleScreen: () => titleScreen.play(),
-  fruitSlice: () => fruitSlice.play(),
-  bombSlice: () => bombSlice.play()
-};
+function testGameEnd() {
+  if (stats.fallen == 5 || !stats.health) {
+    frameRate(0);
+  }
+}
