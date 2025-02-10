@@ -1,4 +1,3 @@
-let displayWaves;
 function preload() {
   //Sound effects
   titleScreen = loadSound("Music/Title Screen.mp3");
@@ -36,42 +35,60 @@ function setup() {
   createCanvas(1000, 700);
   sounds.titleScreen();
 }
+let displayWaves;
 function startGame() {
   waves();
-  spawnBomb();
-  spawnFruit();
+  spawnInteractable(false); //spawns fruit
+  spawnInteractable(true); //spawns bombs
 }
-function draw() {
-  background(255);
-  //Display waves at the start of a wave
-  image(backdropMain, 0, 0, width, height, 0, 0, backdropMain.width, backdropMain.height, COVER)
+function displayVisuals() {
   cutEffects.drawEffects();
   cutEffects.deleteEffect();
-  effectInteractable();
-  testCollision();
-  updateLastPosXYSword();
-  interactablesBounce();
   strokeWeight(0);
   //display player stats
   textSize(50);
   //display health
-  for (let i = 5; i > 0; i--) {heartColour = i > stats.health ? "🖤" : "❤️"; text(heartColour, 980 - i * 60, 50);}
+  for (let i = 5; i > 0; i--) {
+    heartColour = i > stats.health ? "🖤" : "❤️";
+    text(heartColour, 980 - i * 60, 50);
+  }
   //display wave number on wave start, textSize is already set to required amount (ln 53)
   fill(255);
   if (displayWaves) text("Wave " + stats.wave, 430, 330);
   //display score
   textSize(30);
-  text("Score: " + stats.score, 0, 30);
+  text("Score: " + stats.score, 5, 25);
+  //display fallen
+  textSize(30);
+  text("Fallen: " + stats.fallen, 5, 60);
   //draw sword
-  for(let i = 0; i < 10; i++) {
-    stroke('white')
-    strokeWeight(5);
-    line(placesX[i], placesY[i], placesX[i + 1], placesY[i + 1]);
-    placesX[10] = mouseX;
-    placesY[10] = mouseY;
-    placesX[i] = placesX[i + 1];
-    placesY[i] = placesY[i + 1];
-  }
+  if (mouseIsPressed)
+    for (let i = 0; i < 6; i++) {
+      stroke(100 + i * 40);
+      strokeWeight(5);
+      line(placesX[i], placesY[i], placesX[i + 1], placesY[i + 1]);
+    }
+}
+function draw() {
+  //background
+  image(
+    backdropMain,
+    0,
+    0,
+    width,
+    height,
+    0,
+    0,
+    backdropMain.width,
+    backdropMain.height,
+    COVER
+  );
+  testGameEnd();
+  displayVisuals();
+  effectInteractable();
+  testCollision();
+  updateSwordParticles();
+  updateLastPosXYSword();
 }
 //temp method to start game
 function keyPressed() {
