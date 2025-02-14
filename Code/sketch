@@ -90,9 +90,8 @@ function draw() {
   testCollision();
   updateSwordParticles();
   updateLastPosXYSword();
-  temp();
 }
 //temp method to start game
 function keyPressed() {
-  startGame();
+  temp(500, 10)
 }
