@@ -29,6 +29,8 @@ function preload() {
   pineappleHalf2 = loadImage("Assets/pineapple_half_2.png");
   watermelonHalf1 = loadImage("Assets/watermelon_half_1.png");
   watermelonHalf2 = loadImage("Assets/watermelon_half_1.png");
+  //interactables bases
+  baseSpawns = loadStrings("baseSpawns.txt");
 }
 function setup() {
   frameRate(120);
@@ -88,6 +90,7 @@ function draw() {
   testCollision();
   updateSwordParticles();
   updateLastPosXYSword();
+  temp();
 }
 //temp method to start game
 function keyPressed() {
