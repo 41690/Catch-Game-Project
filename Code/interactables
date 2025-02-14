@@ -229,11 +229,14 @@ function effectInteractable() {
     }
   }
 }
-function temp() {
-  for(let i = 0; i < baseSpawns[0] - 1; i++) {
+function temp(XOffset, XVel) {
+  bombSet = baseSpawns[0] - int(random(0,baseSpawns[0]));
+  for(let i = 0; i < baseSpawns[0]; i++) {
     XPos = int(baseSpawns[1].substring((i * 4), (i * 4) + 3));
     YPos = int(baseSpawns[2].substring((i * 4), (i * 4) + 3));
-    circle(XPos + 100, YPos + 100, 10);
-    console.log(XPos, YPos)
+    i = 0;
+    while (Interactable[i] != undefined) i++;
+    if(i == bombSet) Interactable[i] = new bomb(XPos + XOffset, YPos + 500, XVel, -15, 6);
+    else Interactable[i] = new fruit(XPos + XOffset, YPos + 500, XVel,  -15, int(random(0,6)));
   }
 }
