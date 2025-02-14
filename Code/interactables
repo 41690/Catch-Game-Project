@@ -229,3 +229,11 @@ function effectInteractable() {
     }
   }
 }
+function temp() {
+  for(let i = 0; i < baseSpawns[0] - 1; i++) {
+    XPos = int(baseSpawns[1].substring((i * 4), (i * 4) + 3));
+    YPos = int(baseSpawns[2].substring((i * 4), (i * 4) + 3));
+    circle(XPos + 100, YPos + 100, 10);
+    console.log(XPos, YPos)
+  }
+}
