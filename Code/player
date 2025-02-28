@@ -39,6 +39,12 @@ function mousePressed() {
     placesX[i] = mouseX;
     placesY[i] = mouseY;
   }
+  if(settings.displayTitleScreen && mouseX > 415 && mouseX < 585) {
+    if(mouseY > 100 && mouseY < 170) settings.difficulty = 0;
+    if(mouseY > 200 && mouseY < 270) settings.difficulty = 1;
+    if(mouseY > 300 && mouseY < 370) settings.difficulty = 2;
+    if(mouseY > 500 && mouseY < 550) startGame();
+  }
 }
 //tests if sword is cutting interactable
 function testCollision() {
@@ -82,4 +88,7 @@ function testGameEnd() {
   if (stats.fallen == 5 || !stats.health) {
     frameRate(0);
   }
+}
+function startGame() {
+
 }
