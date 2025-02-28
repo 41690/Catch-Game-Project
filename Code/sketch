@@ -37,6 +37,12 @@ function setup() {
   createCanvas(1000, 700);
   sounds.titleScreen();
 }
+//title screen
+const settings = {
+  difficulty: 1,
+  showSword: 0,
+  displayTitleScreen: true
+}
 let displayWaves;
 function startGame() {
   waves();
@@ -44,7 +50,12 @@ function startGame() {
 }
 function displayVisuals() {
   cutEffects.drawEffects();
-  cutEffects.deleteEffect();
+  //draw sword
+  if (mouseIsPressed) for (let i = 0; i < 6; i++) {
+      stroke(100 + i * 40);
+      strokeWeight(5);
+      line(placesX[i], placesY[i], placesX[i + 1], placesY[i + 1]);
+    }
   strokeWeight(0);
   //display player stats
   textSize(50);
@@ -60,17 +71,10 @@ function displayVisuals() {
   textSize(30);
   text("Score: " + stats.score, 5, 25);
   //display fallen
-  textSize(30);
   text("Fallen: " + stats.fallen, 5, 60);
-  //draw sword
-  if (mouseIsPressed)
-    for (let i = 0; i < 6; i++) {
-      stroke(100 + i * 40);
-      strokeWeight(5);
-      line(placesX[i], placesY[i], placesX[i + 1], placesY[i + 1]);
-    }
 }
 function draw() {
+  frameRate(120)
   //background
   image(
     backdropMain,
@@ -84,14 +88,43 @@ function draw() {
     backdropMain.height,
     COVER
   );
-  testGameEnd();
-  displayVisuals();
-  effectInteractable();
-  testCollision();
-  updateSwordParticles();
-  updateLastPosXYSword();
+  if(settings.displayTitleScreen) {
+    textSize(30);
+    fill(255);
+    stroke(0);
+    strokeWeight(3);
+    for(let i = 0; i < 3; i++) {
+      if(i == settings.difficulty) {
+        switch(settings.difficulty) {
+          case 0: 
+            fill(162, 194, 124);
+            break;
+          case 1: 
+            fill(191, 151, 80);
+            break;
+          case 2:
+            fill(168, 45, 56);
+            break;
+        }
+      }
+      rect(415, 100 + 100 * i, 170, 50);
+      fill(255);
+    }
+    fill(255);
+    rect(415, 500, 170, 50);
+    strokeWeight(0);
+    fill(0);
+    text("Easy", 425, 135);
+    text("Normal", 425, 235);
+    text("Hard", 425, 335);
+    text("Start game", 425, 535)
+  }
+  else {
+    displayVisuals();
+    effectInteractable();
+    testCollision();
+    updateSwordParticles();
+    updateLastPosXYSword();
+  }
 }
 //temp method to start game
-function keyPressed() {
-  temp(500, 10)
-}
