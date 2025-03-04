@@ -2,7 +2,7 @@ const stats = {
   health: 5,
   score: 0,
   fallen: 0, //game ends after fallen reaches 5, resets every wave.
-  wave: 0,
+  wave: 0
 };
 const sounds = {
   titleScreen: () => titleScreen.play(),
@@ -14,8 +14,7 @@ const sword = {
   YPosLastFrame: 0,
   updateX: () => (sword.XPosLastFrame = mouseX),
   updateY: () => (sword.YPosLastFrame = mouseY),
-  getSpeed: () =>
-    dist(mouseX, mouseY, sword.XPosLastFrame, sword.YPosLastFrame),
+  getSpeed: () => dist(mouseX, mouseY, sword.XPosLastFrame, sword.YPosLastFrame)
 };
 //used to get speed of sword movement
 function updateLastPosXYSword() {
@@ -25,45 +24,38 @@ function updateLastPosXYSword() {
 //arrays for sword particle locations
 placesX = [0, 0, 0, 0, 0, 0, 0];
 placesY = [0, 0, 0, 0, 0, 0, 0];
-function updateSwordParticles() {
-  for (let i = 0; i < 6; i++) {
+function updateSwordParticles() {for (let i = 0; i < 6; i++) {
     placesX[6] = mouseX;
     placesY[6] = mouseY;
     placesX[i] = placesX[i + 1];
     placesY[i] = placesY[i + 1];
-  }
-}
+}}
 //prevents visual error from moving quickly and then clicking
 function mousePressed() {
   for (let i = 0; i < 6; i++) {
     placesX[i] = mouseX;
     placesY[i] = mouseY;
   }
-  if(settings.displayTitleScreen && mouseX > 415 && mouseX < 585) {
-    if(mouseY > 100 && mouseY < 170) settings.difficulty = 0;
-    if(mouseY > 200 && mouseY < 270) settings.difficulty = 1;
-    if(mouseY > 300 && mouseY < 370) settings.difficulty = 2;
-    if(mouseY > 500 && mouseY < 550) startGame();
+  if (settings.displayTitleScreen && mouseX > 415 && mouseX < 585) {
+    if (mouseY > 100 && mouseY < 170) settings.difficulty = 0;
+    if (mouseY > 200 && mouseY < 270) settings.difficulty = 1;
+    if (mouseY > 300 && mouseY < 370) settings.difficulty = 2;
+    if (mouseY > 500 && mouseY < 550) startGame();
   }
 }
 //tests if sword is cutting interactable
-function testCollision() {
-  for (let i = 0; i < Interactable.length; i++) {
-    if (Interactable[i] != undefined) {
-      if (
-        dist(
-          mouseX - 40,
-          mouseY - 40,
-          Interactable[i].XPos,
-          Interactable[i].YPos
-        ) < 50 &&
-        mouseIsPressed &&
-        sword.getSpeed() > 10
-      )
-        interactable.cut(i);
-    }
-  }
-}
+function testCollision() {for (let i = 0; i < Interactable.length; i++) {if (Interactable[i] != undefined) {
+  if (
+    dist(
+      mouseX - 40,
+      mouseY - 40,
+      Interactable[i].XPos,
+      Interactable[i].YPos
+      ) < 50 &&
+    mouseIsPressed &&
+    sword.getSpeed() > 10
+  ) interactable.cut(i);
+}}}
 //loops every 30 seconds
 function waves() {
   setTimeout(waves, 30000);
@@ -84,11 +76,14 @@ function startNextWave() {
   //increases health by one if health isnt at maximum
   if (stats.health != 5) stats.health++;
 }
-function testGameEnd() {
-  if (stats.fallen == 5 || !stats.health) {
+function testGameEnd() {if (stats.fallen == 5 || !stats.health) {
     frameRate(0);
-  }
-}
+}}
 function startGame() {
-
+  settings.displayTitleScreen = false;
+  waves();
+}
+function aaaa() {
+  spawnBase(int(random(0, 1)));
+  setTimeout(aaaa, 10000);
 }
