@@ -1,10 +1,16 @@
+17
 8
+000 000 000 000 000 000 000 000
 000 029 100 171 200 171 100 029
-100 029 000 029 100 171 200 171
-
-
-
-
+600 529 500 529 600 671 700 671
+050 050 050 050 050 050 050 050
+035 035 035 035 035 035 035 035
+6
+000 000 500 500 999 999
+250 750 250 750 250 750
+700 700 700 700 700 700
+053 047 053 047 053 047
+035 035 035 035 035 035
 
 
 
@@ -34,11 +40,9 @@
 
 Example of a base;
 4 //Number of fruits
+000 111 222 333 //Timer, every 3 is a new object
 000 111 222 333 //XPos, every 3 is a new object
 000 111 222 333 //YPos, every 3 is a new object
-00 11 22 33 //XVel, every 2 is a new object
-00 11 22 33 //Yvel, every 2 is a new object
-0 1 2 3 //Type, every 1 is a new object
-
-Would make objects at XPos 0, 111, 222, 333; YPos 0, 111, 222, 333; XVel 0, 11, 22, 33; YVel 0, 11, 22, 33; Type 0, 1, 2, 3;
-Positions should be relative from the point of spawning
+000 111 222 333 //XVel, every 3 is a new object, 0 at start for positive, 1 for negative
+000 111 222 333 //YVel, every 3 is a new object, 0 at start for positive, 1 for negative
+Positions are relative from the point of spawning
