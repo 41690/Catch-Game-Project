@@ -1,5 +1,5 @@
 class interactable {
-  constructor(xpos, ypos, xvel, yvel, type) {
+  constructor (xpos, ypos, xvel, yvel, type) {
     this.xpos = xpos;
     this.ypos = ypos;
     this.xvel = xvel;
@@ -8,34 +8,16 @@ class interactable {
     this.type = type;
   }
   //getters
-  get XPos() {
-    return this.xpos;
-  }
-  get YPos() {
-    return this.ypos;
-  }
-  get XVel() {
-    return this.xvel;
-  }
-  get YVel() {
-    return this.yvel;
-  }
-  get Type() {
-    return this.type;
-  }
+  get XPos() {return this.xpos;}
+  get YPos() {return this.ypos;}
+  get XVel() {return this.xvel;}
+  get YVel() {return this.yvel;}
+  get Type() {return this.type;}
   //setters
-  set XPos(set) {
-    this.xpos = set;
-  }
-  set YPos(set) {
-    this.ypos = set;
-  }
-  set XVel(set) {
-    this.xvel = set;
-  }
-  set YVel(set) {
-    this.yvel = set;
-  }
+  set XPos(set) {this.xpos = set;}
+  set YPos(set) {this.ypos = set;}
+  set XVel(set) {this.xvel = set;}
+  set YVel(set) {this.yvel = set;}
   //functions
   movement() {
     this.XPos += this.XVel;
@@ -52,17 +34,12 @@ class interactable {
     }
   }
   static cut(i) {
-    if (Interactable[i].Type == 6) {
-      bomb.cutBomb(i);
-    } else {
-      fruit.cutFruit(i);
-    }
+    if (Interactable[i].Type == 6) bomb.cutBomb(i);
+    else fruit.cutFruit(i);
   }
 }
 class fruit extends interactable {
-  constructor(xpos, ypos, xvelocity, yvelocity, type) {
-    super(xpos, ypos, xvelocity, yvelocity, type);
-  }
+  constructor (xpos, ypos, xvelocity, yvelocity, type) {super (xpos, ypos, xvelocity, yvelocity, type);}
   static cutFruit(i) {
     //raise score and play sound
     stats.score += 10;
@@ -71,7 +48,7 @@ class fruit extends interactable {
     let j = 0;
     while (CutEffects[j] != undefined) j++;
     //creates instance
-    CutEffects[j] = new cutEffects(
+    CutEffects[j] = new cutEffects (
       Interactable[i].XPos,
       Interactable[i].YPos,
       Interactable[i].type
@@ -81,9 +58,7 @@ class fruit extends interactable {
   }
 }
 class bomb extends interactable {
-  constructor(xpos, ypos, xvelocity, yvelocity, type) {
-    super(xpos, ypos, xvelocity, yvelocity, type);
-  }
+  constructor (xpos, ypos, xvelocity, yvelocity, type) {super(xpos, ypos, xvelocity, yvelocity, type);}
   static cutBomb(i) {
     //lower health and play sound
     stats.health--;
@@ -91,13 +66,9 @@ class bomb extends interactable {
     //search for an empty spot in CutEffects array
     let j = 0;
     while (CutEffects[j] != undefined) j++;
-    //creates instance
-    CutEffects[j] = new cutEffects(
-      Interactable[i].XPos,
-      Interactable[i].YPos,
-      6
-    );
-    //deletes bomb
+    //create instance
+    CutEffects[j] = new cutEffects(Interactable[i].XPos, Interactable[i].YPos, 6);
+    //delete bomb
     delete Interactable[i];
   }
 }
@@ -109,92 +80,45 @@ class cutEffects {
     this.timer = 40;
   }
   //getters
-  get XPos() {
-    return this.xpos;
-  }
-  get YPos() {
-    return this.ypos;
-  }
-  get Type() {
-    return this.type;
-  }
-  get Timer() {
-    return this.timer;
-  }
+  get XPos() {return this.xpos;}
+  get YPos() {return this.ypos;}
+  get Type() {return this.type;}
+  get Timer() {return this.timer;}
   //setters
-  set XPos(set) {
-    this.xpos = set;
-  }
-  set YPos(set) {
-    this.ypos = set;
-  }
-  set Timer(set) {
-    this.timer = set;
-  }
-  static drawEffects() {
-    for (let i = 0; i < CutEffects.length; i++) {
-      if (CutEffects[i] != undefined) {
-        switch (CutEffects[i].Type) {
-          case 0:
-            image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 1:
-            image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 2:
-            image(clearSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 3:
-            image(orangeSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 4:
-            image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 5:
-            image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-          case 6:
-            image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
-            break;
-        }
-      }
-    }
-  }
-  static deleteEffect() {
-    for (let i = 0; i < CutEffects.length; i++) {
-      if (CutEffects[i] != undefined) {
-        CutEffects[i].Timer--;
-        if (CutEffects[i].Timer < 0) delete CutEffects[i];
-      }
-    }
-  }
+  set XPos(set) {this.xpos = set;}
+  set YPos(set) {this.ypos = set;}
+  set Timer(set) {this.timer = set;}
+  static drawEffects() {for (let i = 0; i < CutEffects.length; i++) {if (CutEffects[i] != undefined) {switch (CutEffects[i].Type) {
+      case 0:
+        image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 1:
+        image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 2:
+        image(clearSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 3:
+        image(orangeSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 4:
+        image(yellowSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 5:
+        image(redSplat, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+      case 6:
+        image(explosion, CutEffects[i].XPos, CutEffects[i].YPos, 80, 80);
+        break;
+  }}}}
+  static deleteEffect() {for (let i = 0; i < CutEffects.length; i++) {if (CutEffects[i] != undefined) {
+    CutEffects[i].Timer--;
+    if (CutEffects[i].Timer < 0) delete CutEffects[i];
+  }}}
 }
 CutEffects = [];
 Interactable = [];
-function spawnInteractable() {
-  randomParameter1 = stats.wave > 20 ? 20 : stats.wave;
-  isBomb = random(randomParameter1, 30) > 25;
-  setTimeout(spawnInteractable, 1000);
-  if (letSpawn) {
-    i = 0;
-    while (Interactable[i] != undefined) i++;
-    XPos = random(300, 700);
-    YPos = 720;
-    XVel = random(-10, 10);
-    YVel = -12 - random(0, 4);
-    if (!isBomb)
-      Interactable[i] = new fruit(
-        XPos,
-        YPos,
-        XVel,
-        YVel,
-        /*type*/ int(random(0, 5))
-      );
-    else Interactable[i] = new bomb(XPos, YPos, XVel, YVel, /*type*/ 6);
-  }
-}
-function drawInteractable(i) {
-  switch (Interactable[i].Type) {
+function drawInteractable(i) {switch (Interactable[i].Type) {
     case 0:
       image(apple, Interactable[i].XPos, Interactable[i].YPos, 80, 80);
       break;
@@ -216,39 +140,35 @@ function drawInteractable(i) {
     default:
       image(bombImg, Interactable[i].XPos, Interactable[i].YPos, 80, 80);
       break;
-  }
+}}
+function effectInteractable() {for (let i = 0; i < Interactable.length; i++) {if (Interactable[i] != undefined) {
+  Interactable[i].movement();
+  drawInteractable(i);
+  if (Interactable[i].XPos > width - 80 || Interactable[i].XPos < 0) Interactable[i].XVel *= -1;
+  if (Interactable[i].YPos > 800) Interactable[i].fell(i);
+}}}
+function spawnBase(baseID) {
+  bsl = int(bases[0][baseID]);
+  numLoops = int(bases[bsl]);
+  bombSet = [];
+  for (let i = 0; i < settings.difficulty; i++) bombSet[i] = int(random(0, numLoops));
+  for (let i = 0; i < numLoops * 4; i += 4) {
+    if (i / 4 == bombSet[0] || i / 4 == bombSet[1] || i / 4 == bombSet[2]) bombFlag = true;
+    else bombFlag = false;
+    setTimeout (
+      spawnInteractable,
+      int(bases[bsl + 1].substring(i, i + 3)),
+      int(bases[bsl + 2].substring(i, i + 3)),
+      int(bases[bsl + 3].substring(i, i + 3)),
+      int(bases[bsl + 4].substring(i, i + 3)) - 50,
+      int(bases[bsl + 5].substring(i, i + 3)) - 50,
+      bombFlag
+    );}
 }
-function effectInteractable() {
-  for (let i = 0; i < Interactable.length; i++) {
-    if (Interactable[i] != undefined) {
-      Interactable[i].movement();
-      drawInteractable(i);
-      if (Interactable[i].XPos > width - 80 || Interactable[i].XPos < 0)
-        Interactable[i].XVel *= -1;
-      if (Interactable[i].YPos > 800) Interactable[i].fell(i);
-    }
-  }
-}
-function doSpawn(type) {
-  locationStart = int(baseSpawns[0].substring(type, type + 1));
-  loops = int(baseSpawns[locationStart]);
-  bombSet = baseSpawns[locationStart] - int(random(0, int(baseSpawns[locationStart])));
-  spawn(0, loops, bombSet, locationStart);
-}
-function spawn(i, loops, bombSet, locationStart) {
-  if(i != loops) { 
-    XPos = (baseSpawns[locationStart + 1].substring((i * 4), (i * 4) + 3));
-    YPos = (baseSpawns[locationStart + 2].substring((i * 4), (i * 4) + 3));
-    XVel = (baseSpawns[locationStart + 3].substring((i * 4), (i * 4) + 3));
-    YVel = (baseSpawns[locationStart + 4].substring((i * 4), (i * 4) + 3));
-    time = (baseSpawns[locationStart + 5].substring((i * 4), (i * 4) + 3));
-    if(XVel.substring(0, 1) == 1) XVel = int(XVel.substring(1, 3)) * -1;
-    if(YVel.substring(0, 1) == 1) YVel = int(YVel.substring(1, 3)) * -1;
-    j = 0;
-    while (Interactable[j] != undefined) j++;
-    if(i == bombSet) Interactable[j] = new bomb(int(XPos), int(YPos) + 800, int(XVel), int(YVel), 6);
-    else Interactable[j] = new fruit(int(XPos), int(YPos) + 800, int(XVel), int(YVel), int(random(0,6)));
-    i++
-    setTimeout(spawn, int(time), i, 0, locationStart);
-  }
+function spawnInteractable(x, y, xv, yv, bombFlag) {
+  type = bombFlag ? 6 : int(random(0, 5));
+  i = 0;
+  while (Interactable[i] != undefined) i++;
+  if (type == 6) Interactable[i] = new bomb(x, y, xv, yv, 6);
+  else Interactable[i] = new fruit(x, y, xv, yv, type);
 }
