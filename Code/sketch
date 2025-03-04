@@ -1,130 +1,465 @@
+let trails = [];
+let scores = [];
+let scorePosArray = [1, 2, 3, 4, 5];
+let fruitsUncutArray = [];
+let fruitsCutArray = [];
+let enteredScore = false;
+let music;
+let gameStatus = "Menu"; // Menu, Playing, Game Over, Choose Fruit, Weapon Colour
+let lives = 5;
+let score = 0;
+let bombDeflects = 2;
+let fruitArray = [];
+scorePos = 1;
+
+showTrails = false;
+mainMenu = true;
+stage1 = false;
+choosingFruit = false;
+choosingWeapon = false;
+weaponSelected = false;
+items = 5;
+level = 1;
+itemsCaught = 0;
+itemsMissed = 0;
+fruitsActive = 0;
+user = "";
+
 function preload() {
-  //Sound effects
-  titleScreen = loadSound("Music/Title Screen.mp3");
-  fruitSlice = loadSound("Music/Fruit Slice.mp3");
-  bombSlice = loadSound("Music/Bomb Slice.mp3");
-  //images
-  backdropMain = loadImage("Assets/backdropMain.png");
-  explosion = loadImage("Assets/explosion.png");
-  bombImg = loadImage("Assets/bomb.png");
-  apple = loadImage("Assets/apple.png");
-  banana = loadImage("Assets/banana.png");
-  coconut = loadImage("Assets/coconut.png");
-  pineapple = loadImage("Assets/pineapple.png");
-  watermelon = loadImage("Assets/watermelon.png");
-  orange = loadImage("Assets/orange.png");
-  orangeSplat = loadImage("Assets/orangeSplat.png");
-  redSplat = loadImage("Assets/redSplat.png");
-  yellowSplat = loadImage("Assets/yellowSplat.png");
-  clearSplat = loadImage("Assets/clearSplat.png");
-  appleHalf1 = loadImage("Assets/apple_half_1.png");
-  appleHalf2 = loadImage("Assets/apple_half_2.png");
-  bananaHalf1 = loadImage("Assets/banana_half_1.png");
-  bananaHalf2 = loadImage("Assets/banana_half_2.png");
-  orangeHalf1 = loadImage("Assets/orange_half_1.png");
-  orangeHalf2 = loadImage("Assets/orange_half_2.png");
-  coconutHalf1 = loadImage("Assets/coconut_half_1.png");
-  coconutHalf2 = loadImage("Assets/coconut_half_2.png");
-  pineappleHalf1 = loadImage("Assets/pineapple_half_1.png");
-  pineappleHalf2 = loadImage("Assets/pineapple_half_2.png");
-  watermelonHalf1 = loadImage("Assets/watermelon_half_1.png");
-  watermelonHalf2 = loadImage("Assets/watermelon_half_1.png");
-  //interactables bases
-  baseSpawns = loadStrings("baseSpawns.txt");
+  myFont = loadFont("Images/BungeeTint-Regular.ttf");
+  myImage = loadImage("Images/FruitNinjaBackground.png");
+  appleUncut = loadImage("Images/fruits/appleUncut.png");
+  appleCut = loadImage("Images/fruits/appleCut.png");
+  pearUncut = loadImage("Images/fruits/pearUncut.png");
+  pearCut = loadImage("Images/fruits/pearCut.png");
+  grapeUncut = loadImage("Images/fruits/grapeUncut.png");
+  grapeCut = loadImage("Images/fruits/grapeCut.png");
+  orangeUncut = loadImage("Images/fruits/orangeUncut.png");
+  orangeCut = loadImage("Images/fruits/orangeCut.png");
+  bananaUncut = loadImage("Images/fruits/bananaUncut.png");
+  bananaCut = loadImage("Images/fruits/bananaCut.png");
+  mangoUncut = loadImage("Images/fruits/mangoUncut.png");
+  mangoCut = loadImage("Images/fruits/mangoCut.png");
+  bombImg = loadImage("Images/bomb.png");
+  bombDeflectedImg = loadImage("Images/bombDeflected.png");
 }
+
 function setup() {
-  frameRate(120);
-  createCanvas(1000, 700);
-  sounds.titleScreen();
-}
-//title screen
-const settings = {
-  difficulty: 1,
-  showSword: 0,
-  displayTitleScreen: true
-}
-let displayWaves;
-function startGame() {
-  waves();
-  spawnInteractable(); //spawns bombs and fruit
-}
-function displayVisuals() {
-  cutEffects.drawEffects();
-  //draw sword
-  if (mouseIsPressed) for (let i = 0; i < 6; i++) {
-      stroke(100 + i * 40);
-      strokeWeight(5);
-      line(placesX[i], placesY[i], placesX[i + 1], placesY[i + 1]);
-    }
-  strokeWeight(0);
-  //display player stats
-  textSize(50);
-  //display health
-  for (let i = 5; i > 0; i--) {
-    heartColour = i > stats.health ? "🖤" : "❤️";
-    text(heartColour, 980 - i * 60, 50);
+  createCanvas(800, 700);
+  let savedScores = localStorage.getItem("highScores");
+  if (savedScores) {
+    scores = JSON.parse(savedScores);
   }
-  //display wave number on wave start, textSize is already set to required amount (ln 53)
-  fill(255);
-  if (displayWaves) text("Wave " + stats.wave, 430, 330);
-  //display score
-  textSize(30);
-  text("Score: " + stats.score, 5, 25);
-  //display fallen
-  text("Fallen: " + stats.fallen, 5, 60);
-}
-function draw() {
-  frameRate(120)
-  //background
-  image(
-    backdropMain,
-    0,
-    0,
-    width,
-    height,
-    0,
-    0,
-    backdropMain.width,
-    backdropMain.height,
-    COVER
+
+  music = loadSound("ambience.mp3");
+  //button is start button to start the game
+  startButton = createImg("Images/FruitNinjaStart.png", "Start");
+  startButton.mousePressed(Start);
+  startButton.size(150, 150);
+  startButton.position(10, 150);
+  startButton.style("font-family", "myFont");
+  startButton.style("font-size", "15px");
+  //restart
+  restartButton = createImg("Images/fruitNinjaRestart.png", "Restart");
+  restartButton.mousePressed(Start);
+  restartButton.size(150, 150);
+  restartButton.position(50, 50);
+  restartButton.style("font-family", "myFont");
+  restartButton.style("font-size", "15px");
+  restartButton.hide();
+  //Returns to main menu
+  mainMenuButton = createImg("Images/fruitNinjaMenu.png", "Main Menu");
+  mainMenuButton.mousePressed(menuReturn);
+  mainMenuButton.size(150, 150);
+  mainMenuButton.position(600, 50);
+  mainMenuButton.style("font-family", "myFont");
+  mainMenuButton.style("font-size", "15px");
+  mainMenuButton.hide();
+  //Weapon Button is to change the colour of the Weappon
+  weaponButton = createImg(
+    "Images/FruitNinjaWeaponColour.png",
+    "Choose Weapon Colour"
   );
-  if(settings.displayTitleScreen) {
-    textSize(30);
-    fill(255);
-    stroke(0);
-    strokeWeight(3);
-    for(let i = 0; i < 3; i++) {
-      if(i == settings.difficulty) {
-        switch(settings.difficulty) {
-          case 0: 
-            fill(162, 194, 124);
-            break;
-          case 1: 
-            fill(191, 151, 80);
-            break;
-          case 2:
-            fill(168, 45, 56);
-            break;
-        }
-      }
-      rect(415, 100 + 100 * i, 170, 50);
-      fill(255);
-    }
-    fill(255);
-    rect(415, 500, 170, 50);
-    strokeWeight(0);
-    fill(0);
-    text("Easy", 425, 135);
-    text("Normal", 425, 235);
-    text("Hard", 425, 335);
-    text("Start game", 425, 535)
+  weaponButton.mousePressed(weaponSelect);
+  weaponButton.size(150, 150);
+  weaponButton.position(600, 150);
+  weaponButton.style("font-family", "myFont");
+  weaponButton.style("font-size", "15px");
+  //Fruit Button is to choose the fruit you want to slice!!
+  fruitButton = createImg("Images/FruitNinjaChooseFruit.png", "Choose Fruit");
+  fruitButton.mousePressed(fruitSelect);
+  fruitButton.size(150, 150);
+  fruitButton.position(300, 250);
+  //Back button is to go back to the main menu
+  backButton = createButton("Back");
+  backButton.mousePressed(Reset);
+  backButton.size(100, 50);
+  backButton.position(0, 0);
+  backButton.style("border-color", "grey");
+  backButton.style("background-color", "grey");
+  backButton.hide();
+  //set username
+  username = createInput("");
+  username.attribute("placeholder", "username");
+  username.position(300, 550);
+  username.hide();
+  //save username and score
+  saveScoreButton = createButton("save");
+  saveScoreButton.mousePressed(saveUserScore);
+  saveScoreButton.size(150, 50);
+  saveScoreButton.position(315, 600);
+  saveScoreButton.style("font-family", "myFont");
+  saveScoreButton.style("font-size", "15px");
+  saveScoreButton.hide();
+  //toggles fruits
+  appleBox = createCheckbox("Apple");
+  appleBox.position(200, 100);
+  appleBox.hide();
+  pearBox = createCheckbox("pear");
+  pearBox.position(300, 100);
+  pearBox.hide();
+  grapeBox = createCheckbox("grape");
+  grapeBox.position(400, 100);
+  grapeBox.hide();
+  orangeBox = createCheckbox("orange");
+  orangeBox.position(200, 200);
+  orangeBox.hide();
+  bananaBox = createCheckbox("banana");
+  bananaBox.position(300, 200);
+  bananaBox.hide();
+  mangoBox = createCheckbox("mango");
+  mangoBox.position(400, 200);
+  mangoBox.hide();
+  for (i = 0; i < items; i++) {
+    fruitArray[i] = new fruits();
   }
-  else {
-    displayVisuals();
-    effectInteractable();
-    testCollision();
-    updateSwordParticles();
-    updateLastPosXYSword();
+  fruitsUncutArray = [
+    appleUncut,
+    pearUncut,
+    grapeUncut,
+    orangeUncut,
+    bananaUncut,
+    mangoUncut,
+  ];
+  fruitsCutArray = [
+    appleCut,
+    pearCut,
+    grapeCut,
+    orangeCut,
+    bananaCut,
+    mangoCut,
+  ];
+  fruitsToggled = [0, 0, 0, 0, 0, 0];
+  fruitsValue = [2, 4, 2, 3, 6, 8];
+}
+
+function draw() {
+  background(220);
+  let topScores = [...scores].sort((a, b) => b.score - a.score).slice(0, 5);
+  image(random(fruitsUncutArray), 100, 100);
+  background(myImage);
+  if (gameStatus == "Playing") {
+    if (!music.isPlaying()) {
+      music.play();
+    }
+    if (mouseIsPressed) {
+      showTrails = true;
+    } else {
+      showTrails = false;
+      trails = [];
+    }
+    fill(200);
+    text("hold click to slice fruit", 10, 25);
+    text("lives:", 10, 50);
+    text(lives, 100, 50);
+    text("score:", 10, 75);
+    text(score, 100, 75);
+    text("bomb Deflects:", 10, 100);
+    text(bombDeflects, 200, 100);
+    text("Level:", 10, 150);
+    text(level, 100, 150);
+    text("Items Caught:", 10, 650);
+    text(itemsCaught, 200, 650);
+    text("Items Missed:", 10, 675);
+    text(itemsMissed, 200, 675);
+    for (i = 0; i < items; i++) {
+      fruitArray[i].move();
+    }
+    if (score >= 100) {
+      level = 2;
+    }
+    if (lives <= 0) {
+      print("game Over");
+      gameStatus = "game Over";
+    }
+  }
+
+  if (gameStatus == "game Over") {
+    music.stop();
+    fill(200);
+    textSize(50);
+    text("GAME OVER", 250, 100);
+    textSize(20);
+    text("Your Score was:", 290, 200);
+    text(score, 485, 200);
+    text("Top 5 scores:", 320, 250);
+    text("1.", 280, 300);
+    text("2.", 280, 335);
+    text("3.", 280, 370);
+    text("4.", 280, 405);
+    text("5.", 280, 440);
+    for (let i = 0; i < topScores.length; i++) {
+      let entry = topScores[i];
+      text(`${entry.user}: ${entry.score}`, 340, 300 + i * 35);
+    }
+    username.show();
+    saveScoreButton.show();
+    restartButton.show();
+    mainMenuButton.show();
+    for (i = 0; i < items; i++) {
+      fruitArray[i].fruitReset();
+    }
+  }
+
+  if (stage1 == true) {
+    fill("silver");
+    textSize(15);
+    text("Choose Colour of the sword!!", 340, 150);
+    fill("silver");
+  }
+
+  if (mainMenu == true) {
+    fill("grey");
+    textSize(20);
+    triangle(0, 0, 900, 0, 0, 90);
+    triangle(0, 700, 900, 700, 900, 610);
+    fill("black");
+    textFont(myFont);
+    text("Fruit Ninja", 380, 30);
+    textSize(20);
+  }
+
+  if (showTrails == true) {
+    trails.push(createVector(mouseX, mouseY));
+    let r = colourButton1.value();
+    let g = colourButton2.value();
+    let b = colourButton3.value();
+    fill("silver");
+    if (trails.length > 10) trails.shift();
+    for (let i = 0; i < trails.length - 1; i++) {
+      stroke(r, g, b);
+      strokeWeight(i);
+      line(trails[i].x, trails[i].y, trails[i + 1].x, trails[i + 1].y);
+      strokeWeight(0);
+    }
+  }
+
+  //fruit checkboxes
+  if (appleBox.checked()) {
+    fruitsToggled[0] = 1;
+    fruitsActive += 1;
+  } else {
+    fruitsToggled[0] = 0;
+    fruitsActive += 0;
+  }
+  if (pearBox.checked()) {
+    fruitsToggled[1] = 1;
+    fruitsActive += 1;
+  } else {
+    fruitsToggled[1] = 0;
+  }
+  if (grapeBox.checked()) {
+    fruitsToggled[2] = 1;
+  } else {
+    fruitsToggled[2] = 0;
+  }
+  if (orangeBox.checked()) {
+    fruitsToggled[3] = 1;
+  } else {
+    fruitsToggled[3] = 0;
+  }
+  if (bananaBox.checked()) {
+    fruitsToggled[4] = 1;
+  } else {
+    fruitsToggled[4] = 0;
+  }
+  if (mangoBox.checked()) {
+    fruitsToggled[5] = 1;
+  } else {
+    fruitsToggled[5] = 0;
   }
 }
-//temp method to start game
+
+function Start() {
+  fruitsActive = 0;
+  for (i = 0; i < 6; i++) {
+    if (fruitsToggled[i] == 1) {
+      fruitsActive += 1;
+    }
+  }
+  if (fruitsActive > 0 && weaponSelected) {
+    itemsCaught = 0;
+    itemsMissed = 0;
+    lives = 5;
+    score = 0;
+    bombDeflects = 2;
+    level = 1;
+    for (i = 0; i < 5; i++) {
+      fruitArray[i].restart();
+    }
+    weaponButton.hide();
+    restartButton.hide();
+    mainMenuButton.hide();
+    username.hide();
+    saveScoreButton.hide();
+    startButton.hide();
+    fruitButton.hide();
+    mainMenu = false;
+    enteredScore = false;
+    gameStatus = "Playing";
+    print(gameStatus);
+  } else {
+    print("Select at least 1 fruit and select a weapon colour");
+  }
+}
+
+function weaponSelect() {
+  choosingWeapon = true;
+  weaponSelected = true;
+  weaponButton.hide();
+  startButton.hide();
+  fruitButton.hide();
+  // Changes the red colour of the sword
+  colourButton1 = createSlider(0, 255, 0);
+  colourButton1.position(330, 200);
+  colourButton1.input(updateValue);
+  colourButton1.changed(saves);
+  let r = getItem("redValue");
+  if (r !== null) {
+    colourButton1.value(r);
+  }
+  //input for the red colour for the sword
+  colourInput1 = createInput("");
+  colourInput1.position(550, 200);
+  colourInput1.size(40, 20);
+  colourInput1.value(colourButton1.value());
+  // Changes the green colour of the sword
+  colourButton2 = createSlider(0, 255, 0);
+  colourButton2.position(330, 250);
+  colourButton2.input(updateValue);
+  let g = getItem("greenValue");
+  if (g !== null) {
+    colourButton2.value(g);
+  }
+  //input for the green colour for the sword
+  colourInput2 = createInput("");
+  colourInput2.position(550, 245);
+  colourInput2.size(40, 20);
+  colourInput2.value(colourButton2.value());
+  //changes the blue colour in the sword
+  colourButton3 = createSlider(0, 255, 0);
+  colourButton3.position(330, 300);
+  colourButton3.input(updateValue);
+  let b = getItem("blueValue");
+  if (b !== null) {
+    colourButton3.value(b);
+  }
+  //input for the green colour of the sword
+  colourInput3 = createInput("");
+  colourInput3.position(550, 290);
+  colourInput3.size(40, 20);
+  colourInput3.value(colourButton3.value());
+  stage1 = true;
+  goBack = true;
+  //Back button is to go back to the main menu
+  backButton = createButton("Back");
+  backButton.mousePressed(Reset);
+  backButton.size(100, 50);
+  backButton.position(0, 0);
+  backButton.style("border-color", "grey");
+  backButton.style("background-color", "grey");
+  //Save button is to save the colour of the sword
+  saveButton = createButton("Save");
+  saveButton.mousePressed(saves);
+  saveButton.position(550, 330);
+  showTrails = true;
+}
+
+function updateValue() {
+  colourInput1.value(colourButton1.value());
+  colourInput2.value(colourButton2.value());
+  colourInput3.value(colourButton3.value());
+}
+
+function fruitSelect() {
+  choosingFruit = true;
+  weaponButton.hide();
+  startButton.hide();
+  fruitButton.hide();
+  backButton.show();
+  appleBox.show();
+  pearBox.show();
+  grapeBox.show();
+  orangeBox.show();
+  bananaBox.show();
+  mangoBox.show();
+}
+
+function saveUserScore() {
+  // Add the new score
+  let user = username.value();
+  if (!enteredScore) {
+    enteredScore = true;
+    scores.push({ user, score });
+
+    // Save back to localStorage
+    localStorage.setItem("highScores", JSON.stringify(scores));
+  }
+}
+
+function Reset() {
+  if (choosingFruit) {
+    appleBox.hide();
+    pearBox.hide();
+    grapeBox.hide();
+    orangeBox.hide();
+    bananaBox.hide();
+    mangoBox.hide();
+    choosingFruit = false;
+  } else if (choosingWeapon) {
+    colourButton1.hide();
+    colourButton2.hide();
+    colourButton3.hide();
+    colourInput1.hide();
+    colourInput2.hide();
+    colourInput3.hide();
+    backButton.hide();
+    saveButton.hide();
+    choosingWeapon = false;
+  }
+  weaponButton.show();
+  startButton.show();
+  fruitButton.show();
+  stage1 = false;
+  showTrails = false;
+  backButton.hide();
+}
+
+function menuReturn() {
+  lives = 5;
+  mainMenu = true;
+  gameStatus = "Menu";
+  weaponButton.show();
+  startButton.show();
+  fruitButton.show();
+  username.hide();
+  saveScoreButton.hide();
+  mainMenuButton.hide();
+  restartButton.hide();
+}
+
+function saves() {
+  storeItem("redValue", colourButton1.value());
+  storeItem("greenValue", colourButton2.value());
+  storeItem("blueValue", colourButton3.value());
+}
